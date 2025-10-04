@@ -1,0 +1,23 @@
+- title: Home
+  url: /
+  side: left
+
+- title: The Journey
+  url: /blog/
+  side: left
+
+- title: "Nemo's Vector"
+  url: /nemos-vector/
+  side: right
+
+- title: The Assistant
+  url: /assistant/
+  side: right
+
+- title: About
+  url: /about/
+  side: right
+
+- title: Contact
+  url: /contact/
+  side: right
