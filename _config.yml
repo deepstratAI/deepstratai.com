@@ -22,8 +22,8 @@ title: DeepStratAI welcomes you!!!
 email: dwip.sengupta@deepstratai.com
 description: >- # this means to ignore newlines until "baseurl:"
   We use AI to demystify complex financial landscapes and build intuitive tools for the common NEMO (the underdogs)
-baseurl: "/deepstratai.com" # the subpath of your site, e.g. /blog
-url: "https://deepstratai.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://www.deepstratai.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: deepstratAI
 github_username:  deepstratAI
 
