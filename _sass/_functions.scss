@@ -109,12 +109,28 @@ $modules: (
 }
 
 // CONVERT TO REM
-@function convert-to-rem($value, $base-value: $rem-base) {
-  $value: calc(strip-unit($value) / strip-unit($base-value) * 1rem);
+// @function convert-to-rem($value, $base-value: $rem-base) {
+//  $value: calc(strip-unit($value) / strip-unit($base-value) * 1rem);
 
-  @if ($value ==0rem) {
-    $value: 0;
+ // @if ($value ==0rem) {
+ //   $value: 0;
+ //  }
+
+  // CONVERT TO REM Replaced code starts here (dwip)
+@function convert-to-rem($value, $base-value: $rem-base) {
+  // Do the math in Sass first
+  $value: strip-unit($value) / strip-unit($base-value);
+
+  // Turn 0 into a unitless number to avoid `0rem`
+  @if ($value == 0) {
+    @return 0;
   }
+
+  // Return the final value with the `rem` unit
+  @return #{$value}rem;
+}
+
+ // CONVERT TO REM Replaced code ends here (dwip)
 
   // Turn 0rem into 0
   @return $value;
