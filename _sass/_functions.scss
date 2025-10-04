@@ -116,6 +116,10 @@ $modules: (
  //   $value: 0;
  //  }
 
+  // Turn 0rem into 0
+ // @return $value;
+// }
+
   // CONVERT TO REM Replaced code starts here (dwip)
 @function convert-to-rem($value, $base-value: $rem-base) {
   // Do the math in Sass first
@@ -132,9 +136,7 @@ $modules: (
 
  // CONVERT TO REM Replaced code ends here (dwip)
 
-  // Turn 0rem into 0
-  @return $value;
-}
+ 
 
 @function data($attr) {
   @if $namespace {
