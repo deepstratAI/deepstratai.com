@@ -14,7 +14,7 @@ title: "DeepStratAI"
 slogan: 'A compass for the financial ocean'
 
 # The description is used on homepage and in the footer to quickly describe your website. Use a maximum of 150 characters for SEO-purposes.
-description: "The Market is a vast, thankless ocean, and most of us are just Nemo looking for a fighting chance. This is the logbook for that journey. We're building a compass, powered by AI, to help the underdogs navigate the sharks and whales. No get-rich-quick nonsense, just a solid shot at finding a safe haven."
+description: "The Market is a vast, thankless ocean, and most of us are just Nemo looking for a fighting chance. This is the logbook for that journey. We're building a compass, powered by AI, to help the underdogs navigate the sharks and whales. No get-rich-quick nonsense, just a solid shot at finding a safe haven. Quick test"
 
 # The credits show up in the includes/_footer.html – It would be nice of you to leave a link to Phlow or Feeling Responsive as a thank you :)
 credits: '<p>Created with &hearts; by <a href="http://phlow.de/">Phlow</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>'
