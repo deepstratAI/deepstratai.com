@@ -79,3 +79,10 @@ search: false
     flex-direction: column; /* Stacks the flex items vertically */
   }
 }
+
+/* Custom styles for category filter alignment */
+.taxonomy-index a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
