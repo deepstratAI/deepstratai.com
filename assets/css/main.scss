@@ -7,3 +7,75 @@ search: false
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+/* -- Strat's Custom Overrides -- */
+.masthead {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Sticky Masthead Background Override */
+.masthead--sticky .greedy-nav {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+/* -- Strat's Custom Tiles -- */
+
+/* Tile Container - uses Flexbox to align children */
+.tile-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em; /* This creates space between the tiles */
+  margin-top: 2em;
+  flex-wrap: wrap; /* Allows tiles to wrap onto the next line on smaller screens */
+}
+
+/* Individual Tile Styling */
+.tile {
+  flex: 1; /* Allows each tile to grow and take up equal space */
+  min-width: 250px; /* Prevents tiles from getting too squished before wrapping */
+  padding: 1.5em;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Softens the corners */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile h3 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+/* Image Styling */
+.tile-image {
+  max-width: 150px; /* Controls the max size of the image */
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Enforces a square shape */
+  object-fit: cover; /* Prevents image distortion */
+  border-radius: 8px;
+  margin: 0 auto 1.5em; /* Centers the image and adds space below */
+}
+
+/* Subheader Styling */
+.tile-subheader {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #777;
+  margin-top: -0.25em;
+}
+
+/* Pushes the button to the bottom of the tile */
+.tile .btn {
+  margin-top: auto;
+}
+
+/* Responsive - Stack the tiles on mobile screens */
+@media screen and (max-width: 768px) {
+  .tile-container {
+    flex-direction: column; /* Stacks the flex items vertically */
+  }
+}

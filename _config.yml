@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "default" # "dark", "aqua", "contrast", "air", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -21,12 +21,12 @@ title                    : "DeepStratAI"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "A Vector for every NEMO"
-description              : "An amazing website."
+description              : "Because we've seen the little fish get lost in the tide too many times. We exist to give the underdog a fighting chance, to prove that with the right tools, anyone can chart their own course to financial well-being. It’s not just about wealth; it’s about the quiet confidence of knowing where you're going."
 url                      : "https://www.deepstratai.com"
-baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+baseurl                  : "" # the subpath of your site, e.g. "/blog"
+repository               : deepstratAI/deepstratai.com  # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo                     : assets/images/Favicon-removebg-preview.png #path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 breadcrumbs              : # true, false (default)
 words_per_minute         : 200
@@ -88,6 +88,13 @@ naver_site_verification  :
 yandex_site_verification :
 baidu_site_verification  :
 
+# -- UI Settings -------------------------------------------------------------
+#
+# Enable the sticky masthead, search, and other UI elements.
+# For more information, see: https://mmistakes.github.io/minimal-mistakes/docs/configuration/
+
+# masthead_sticky: true
+
 # Social Sharing
 twitter:
   username               :
@@ -113,53 +120,32 @@ analytics:
 
 # Site Author
 author:
-  name             : "Dwip Sengupta"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
+  name             : "Dwip"
+  avatar           : "assets/images/Author Bio.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "...focused on building intuitive tools and providing clear education for the everyday investor... an open source initiative"
+  location         : "India"
   email            :
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
+      url: "mailto:dwip@deepstratai.com"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url: "https://twitter.com/"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url: "https://facebook.com/"
+      url: "https://twitter.com/deepstratAI"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://github.com/deepstratAI"
 
 # Site Footer
 footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url:
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url:
+      url: "https://twitter.com/deepstratAI"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url:
-    - label: "GitLab"
-      icon: "fab fa-fw fa-gitlab"
-      # url:
-    - label: "Bitbucket"
-      icon: "fab fa-fw fa-bitbucket"
-      # url:
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url:
-  since: "2013"
+      url: "https://github.com/deepstratAI"
+  since: "2025"
 
 
 # Reading Files
