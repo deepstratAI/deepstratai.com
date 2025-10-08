@@ -7,7 +7,7 @@ main:
   - title: "Products"
     url: /our-products/
   - title: "About"
-    url: /About/
+    url: /about/
   - title: "Sitemap"
     url: /sitemap/
 
