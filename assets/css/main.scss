@@ -86,3 +86,22 @@ search: false
   justify-content: space-between;
   align-items: center;
 }
+
+
+/* -- Strat's Custom Overrides -- */
+
+// ... (your existing custom code is here) ...
+
+/* Custom styles for category filter alignment */
+.taxonomy-index a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Remove hyphen from taxonomy count */
+.taxonomy-index .archive-taxonomy-name + .taxonomy-count::before {
+/* ^--- This space is required */
+  content: "";
+  margin-left: 0;
+}

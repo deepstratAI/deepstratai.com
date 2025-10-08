@@ -15,14 +15,12 @@ author_profile: true
     {% for category in site.categories %}
       {% if category[0] == category_name %}
         <li>
-            <a href="{{ site.baseurl }}/categories/#{{ category[0] | slugify }}">
+          <a href="{{ site.baseurl }}/categories/#{{ category[0] | slugify }}">
             <span class="archive-taxonomy-name"><strong>{{ category[0] }}</strong></span>
-             &nbsp; <span class="taxonomy-count">{{ category[1].size }}</span>
-             </a>
+            &nbsp; <span class="taxonomy-count">{{ category[1].size }}</span>
+          </a>
         </li>
       {% endif %}
     {% endfor %}
   {% endfor %}
 </ul>
-
----

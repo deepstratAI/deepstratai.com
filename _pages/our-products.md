@@ -2,7 +2,7 @@
 title: "Products"
 permalink: /our-products/
 layout: single
-author_profile: true
+author_profile: false
 toc: true
 toc_label: "Our Products"
 toc_icon: "cubes"
@@ -18,12 +18,12 @@ Our products are open-source initiatives designed to empower the retail investor
 
 The project is currently under active development.
 
-[View on GitHub](https://github.com/your-username/nemos-vector){: .btn .btn--github}
+[View on GitHub](https://github.com/deepstratAI/nemos-vector){: .btn .btn--github}
 
-## Market Sentiment Analyzer (Codename: Sonar)
+## Nemo's Tutor
 
-*(Placeholder for the second product)*
+**Nemo's Tutor** helps Nemo learn to become the  "educated" human in the loop.
 
-**Sonar** is a planned tool to analyze market sentiment by processing real-time news, social media trends, and financial reports. It aims to provide a simple, visual indicator of the prevailing mood in the market—whether it's driven by fear, greed, or neutrality—helping investors make more informed, less emotional decisions.
+The project is currently under active development.
 
-[View on GitHub](https://github.com/your-username/sonar-repo){: .btn .btn--github}
+[View on GitHub](https://github.com/deepstratAI/nemos-tutor){: .btn .btn--github}

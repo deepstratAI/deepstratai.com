@@ -24,6 +24,5 @@ Our approach is built on three core principles:
 3.  **Open Source & Transparency:** All our code and educational materials are open source. We believe in collaborative growth and transparency, allowing anyone to access, contribute to, and verify our work.
 
 ### About the Founder
-*(This is a placeholder for your personal story. The author profile in the sidebar will be pulled from your `_config.yml` file, but this is a space for a more detailed narrative.)*
 
 I started this project after years of observing the market and seeing friends and family struggle with the same challenges. My goal is to combine my passion for technology with my deep interest in financial markets to build something that truly levels the playing field. This is not just a project; it's a mission to foster a community of empowered, knowledgeable investors.

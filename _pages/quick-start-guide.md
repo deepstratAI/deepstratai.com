@@ -24,5 +24,3 @@ Nemo is any retail investor who is emotional, may not fully grasp the risks of t
 1.  **Read Our Research:** This section will contain our articles, analyses, and thoughts on the market. It's the best place to begin your educational journey.
 2.  **Explore the Products:** As we develop tools like "Nemo's Vector," you will find detailed notes and usage guides in this section.
 3.  **Learn the Fundamentals:** We believe in building a strong foundation. Our content is structured to help you understand the core concepts of investing, not just chase tips.
-
-{% include video id="Ua0B6admdy0" provider="youtube" %}
