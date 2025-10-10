@@ -4,20 +4,28 @@ permalink: /quick-start-guide/
 layout: single
 author_profile: false
 toc: true
+toc_label: "On This Page"
+toc_sticky: true
 search: true
 ---
 
 ## Welcome to DeepStratAI
 
-This is the logbook for the everyday investor, whom we affectionately call **"Nemo."** The Indian stock market is a vast ocean where large, well-equipped players (Sharks & Whales) often have the upper hand. Our mission is to provide Nemo with the tools and knowledge to navigate these waters.
+The Indian stock market is a vast ocean where large, well-equipped players (Sharks & Whales) often have the upper hand. 
+
+This is the logbook for the everyday investor, whom we affectionately call **“Nemo.”** 
+
+Our mission is to provide Nemo with the tools and knowledge to navigate these waters.
 
 ### Who is Nemo?
 
-Nemo is any retail investor who is emotional, may not fully grasp the risks of the market, and might struggle to differentiate between speculation, trading, and long-term investing. If that sounds like you or someone you know, you're in the right place.
+Nemo is any **emotional and enthusiastic retail investor**, who may not fully grasp the risks of the market, and might struggle to differentiate between speculation, trading, and long-term investing. If that sounds like you or someone you know, you're in the right place.
 
 ### What is Nemo's Vector?
 
-"Nemo's Vector" is our flagship product concept. It's not a get-rich-quick scheme, but rather a compass designed to guide Nemo on a journey of financial education and empowerment. It will combine data-driven insights with the critical element of an educated "human in the loop" to turn market chaos into a navigable chart.
+**"Nemo's Vector"** is our flagship product concept. It's not a get-rich-quick scheme, but rather a compass designed to guide Nemo on a journey of financial education and empowerment. 
+
+It will combine data-driven insights with the critical element of an **educated "human in the loop"** to turn market chaos into a navigable chart. 
 
 ### How to Get Started
 

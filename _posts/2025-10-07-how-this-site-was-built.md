@@ -8,6 +8,7 @@ tags:
   - Web Development
   - Open Source
 search: true
+comments: true
 ---
 
 This website is an open-source initiative built using the static site generator **Jekyll** and hosted on **GitHub Pages**. This approach was chosen for its speed, security, and simplicity.

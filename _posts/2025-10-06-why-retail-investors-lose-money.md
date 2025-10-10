@@ -19,6 +19,8 @@ tags: [Investing, Psychology, Behavioral Finance, Retail Investing]
 
 > We need to talk about the elephant in the portfolio. You did your research. You watched the videos. You opened a trading account, bought a stock that your friend’s cousin’s gym instructor said was a "sure thing," and for a glorious 48 hours, you were a stock market genius. And then... you weren't.
 
+<!--excerpt-->
+
 If you’ve ever felt the stomach-lurching drop of a stock in the red and thought, "How does this keep happening? Is the market rigged against me?"—you're not alone. And you're not entirely wrong. But it’s also not the whole story.
 
 Losing money in the market often boils down to a few common enemies. Let's meet them, so you can learn how to fight them.
@@ -72,3 +74,4 @@ The solution is to have a **Process**.
 A process is a set of rules you create for yourself in the calm light of day, so you can follow them in the heat of the moment. It's a system for *how* you buy, *when* you sell, and *how* you manage risk. It's the compass that keeps you on course when the emotional storms of fear and greed hit. It's your defence against the gremlin in the mirror.
 
 Understanding these enemies is the first, most crucial step. Now you know what you’re up against. In the articles to come, we'll start building the tools you need to fight back.
+
