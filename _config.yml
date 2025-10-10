@@ -121,7 +121,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Dwip"
+  name             : ""
   avatar           : "assets/images/Author Bio.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "...focused on building intuitive tools and providing clear education for the everyday investor... an open source initiative"
   location         : "India"
