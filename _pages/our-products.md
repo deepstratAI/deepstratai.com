@@ -6,6 +6,8 @@ author_profile: false
 toc: true
 toc_label: "Our Products"
 toc_icon: "cubes"
+toc_sticky: true
+author_profile: true
 ---
 
 Our products are open-source initiatives designed to empower the retail investor ("Nemo") with the tools and knowledge needed to navigate the complexities of the Indian stock market.
