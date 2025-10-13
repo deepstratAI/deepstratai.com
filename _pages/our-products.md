@@ -18,7 +18,7 @@ Our products are open-source initiatives designed to empower the retail investor
 
 **Nemo's Vector** is our flagship concept, designed to be the compass for the everyday investor. It is not a get-rich-quick scheme, but a comprehensive tool that combines data-driven insights with the critical element of an educated "human in the loop." Its goal is to demystify complex financial landscapes and turn market chaos into a navigable chart.
 
-The project is currently under active development.
+Coming Soon! The project is currently under active development.
 
 [View on GitHub](https://github.com/deepstratAI/nemos-vector){: .btn .btn--github}
 
