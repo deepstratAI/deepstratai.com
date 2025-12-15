@@ -8,6 +8,8 @@ main:
     url: /our-products/
   - title: "About"
     url: /about/
+  - title: "Growth Profile"
+    url: /profile/
   - title: "Sitemap"
     url: /sitemap/
 

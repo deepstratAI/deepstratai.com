@@ -1,0 +1,488 @@
+---
+layout: null
+permalink: /profile/
+title: Growth Lead Profile
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dwip Sengupta | Growth Lead Candidate Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Utilities */
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
+        h1, h2, h3, .serif { font-family: 'Merriweather', serif; }
+        .funnel-step { transition: all 0.3s ease; cursor: pointer; }
+        .funnel-step:hover { transform: translateX(5px); }
+        .active-step { border-left-width: 4px; border-color: #0f766e; background-color: #f0fdfa; }
+        
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        .metric-card { transition: transform 0.2s; }
+        .metric-card:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 antialiased">
+
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <a href="/" class="no-underline flex items-center gap-2">
+                    <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center text-white font-bold text-sm">D</div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Dwip Sengupta</span>
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="/" class="hover:text-teal-700 transition font-bold">Home</a>
+                <a href="#narrative" class="hover:text-teal-700 transition">The Narrative</a>
+                <a href="#growth-engine" class="hover:text-teal-700 transition">The Growth Engine</a>
+                <a href="#fitment" class="hover:text-teal-700 transition">Fitment</a>
+                <a href="#timeline" class="hover:text-teal-700 transition">Timeline</a>
+            </nav>
+            <a href="mailto:dwip.sengupta@gmail.com" class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2 rounded-md text-sm font-medium transition">Contact Me</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <section id="narrative" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-block px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-bold uppercase tracking-wide border border-teal-100">
+                    Growth Lead Applicant
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight serif">
+                    Growth through Utility.
+                </h1>
+                <h2 class="text-xl text-slate-600 font-light leading-relaxed">
+                    Building the engine to turn "AI" from a buzzword into a daily utility for a billion Indians.
+                </h2>
+                <div class="prose prose-stone text-slate-600">
+                    <p>
+                        The Indian market is not just a demographic statistic; it is a complex ecosystem of localized frictions and immense aspirations. For 12 years, I haven't just observed this market; I have built digital highways through it. From <strong>Hero DigiFin</strong> to <strong>Vodafone Idea's payment ecosystem</strong>, my career is defined by removing friction and scaling utility.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <div class="bg-white px-4 py-2 rounded border border-stone-200 shadow-sm text-sm">
+                        <span class="block text-stone-400 text-xs uppercase">Scale Managed</span>
+                        <span class="font-bold text-teal-700">~INR 300 Cr/month</span>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded border border-stone-200 shadow-sm text-sm">
+                        <span class="block text-stone-400 text-xs uppercase">Reach</span>
+                        <span class="font-bold text-teal-700">1,000+ Touchpoints</span>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded border border-stone-200 shadow-sm text-sm">
+                        <span class="block text-stone-400 text-xs uppercase">Expertise</span>
+                        <span class="font-bold text-teal-700">Product + Data + Marketing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-stone-200 shadow-lg">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2">Why Me? The Core Thesis</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-teal-600 mr-3 text-lg">&#10003;</span>
+                        <div>
+                            <span class="font-bold text-slate-800">Full-Funnel Athlete</span>
+                            <p class="text-sm text-slate-500">Proven impact from Acquisition (Hero) to Monetization (Vodafone).</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-teal-600 mr-3 text-lg">&#10003;</span>
+                        <div>
+                            <span class="font-bold text-slate-800">Technical Depth</span>
+                            <p class="text-sm text-slate-500">Ex-Principal Data Analyst - well versed with Python, SQL and ML.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-teal-600 mr-3 text-lg">&#10003;</span>
+                        <div>
+                            <span class="font-bold text-slate-800">India Native</span>
+                            <p class="text-sm text-slate-500">Built for "Bharat" (Tier-2+ India), not just urban metros.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-teal-600 mr-3 text-lg">&#10003;</span>
+                        <div>
+                            <span class="font-bold text-slate-800">Start-up & Corporate Hybrid</span>
+                            <p class="text-sm text-slate-500">Agility of Medly with the scale of Hero & Vodafone.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="growth-engine" class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+            <div class="p-8 border-b border-stone-100">
+                <h2 class="text-2xl font-bold text-slate-900 serif mb-2">The Growth Engine</h2>
+                <p class="text-slate-600 max-w-3xl">
+                    A "Growth Lead" must operate across the entire user lifecycle. Explore my career highlights mapped to the <strong>AARRR Framework</strong> to see how I have engineered growth at every stage. Click the stages on the left to explore.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[500px]">
+                <div class="lg:col-span-4 bg-stone-50 border-r border-stone-200 p-4 space-y-2">
+                    <div onclick="updateFunnel('acquisition')" id="btn-acquisition" class="funnel-step active-step p-4 rounded cursor-pointer hover:bg-white border-l-4 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">1. Acquisition</span>
+                            <span class="text-xs text-stone-400">Scale & Reach</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Expanding channels & touchpoints.</p>
+                    </div>
+                    
+                    <div onclick="updateFunnel('activation')" id="btn-activation" class="funnel-step p-4 rounded cursor-pointer hover:bg-white border-l-4 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">2. Activation</span>
+                            <span class="text-xs text-stone-400">Friction Removal</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Optimization & TAT reduction.</p>
+                    </div>
+
+                    <div onclick="updateFunnel('retention')" id="btn-retention" class="funnel-step p-4 rounded cursor-pointer hover:bg-white border-l-4 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">3. Retention</span>
+                            <span class="text-xs text-stone-400">Engagement</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Churn prediction & Loyalty.</p>
+                    </div>
+
+                    <div onclick="updateFunnel('revenue')" id="btn-revenue" class="funnel-step p-4 rounded cursor-pointer hover:bg-white border-l-4 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">4. Revenue</span>
+                            <span class="text-xs text-stone-400">Monetization</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Unit Economics & Payments.</p>
+                    </div>
+
+                    <div onclick="updateFunnel('infrastructure')" id="btn-infrastructure" class="funnel-step p-4 rounded cursor-pointer hover:bg-white border-l-4 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">5. Infrastructure</span>
+                            <span class="text-xs text-stone-400">Data & AI</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">The tech backbone.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 p-8 relative">
+                    <div id="funnel-content" class="space-y-6">
+                        </div>
+                    
+                    <div class="mt-8 pt-8 border-t border-stone-100">
+                        <h4 class="text-sm font-bold text-stone-400 uppercase mb-4">Impact Visualization</h4>
+                        <div class="chart-container">
+                            <canvas id="impactChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fitment" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-slate-900 serif">Candidate Fitment Analysis</h3>
+                    <p class="text-sm text-slate-500 mt-2">Mapping my profile against the explicit requirements in the OpenAI Growth Lead Job Description.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="fitmentChart"></canvas>
+                </div>
+                <div class="mt-4 text-center">
+                    <span class="inline-block px-2 py-1 bg-stone-100 text-stone-600 text-xs rounded mr-2">OpenAI Needs</span>
+                    <span class="inline-block px-2 py-1 bg-teal-100 text-teal-800 text-xs rounded">My Profile</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 serif mb-4">The "Growth Stack"</h3>
+                    <p class="text-sm text-slate-600 mb-6">
+                        Modern growth is not just marketing; it's engineering. I bring the technical toolkit required to build "AI-native workflows" and rigorous experimentation platforms.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Data Science & AI</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">Python</span>
+                                <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">SQL</span>
+                                <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">Machine Learning</span>
+                                <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">Predictive Modeling</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Growth & Product</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-100">A/B Testing</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-100">Funnel Optimization</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-100">CAC/LTV Analysis</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-100">Cloud Migration (Azure)</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Leadership</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full border border-purple-100">Team Building (0 to 7)</span>
+                                <span class="px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full border border-purple-100">Strategic Narrative</span>
+                                <span class="px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full border border-purple-100">Stakeholder Mgmt</span>
+                            </div>
+                        </div>
+                        <div class="pt-6 mt-6 border-t border-stone-100">
+                            <h4 class="font-bold text-slate-800 text-sm mb-4">Verifiable Certifications</h4>
+                            <div class="flex flex-wrap gap-4 justify-center sm:justify-start">
+                                
+                                <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="a82aea6d-5dbc-4ddb-a0e2-aa681ee4ebff" data-share-badge-host="https://www.credly.com"></div>
+                                
+                                <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="3933640a-07a7-469b-89de-d3d091ade8bf" data-share-badge-host="https://www.credly.com"></div>
+                                
+                                <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="2cf00965-2ba0-4c61-a70d-b5614ce2cc58" data-share-badge-host="https://www.credly.com"></div>
+
+                                <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-stone-50 p-4 rounded border border-stone-200">
+                    <p class="text-xs text-slate-500 italic">
+                        "Experienced with AI-driven marketing tools... familiarity with engineering concepts..."
+                    </p>
+                    <p class="text-xs font-bold text-teal-700 mt-1 text-right">- Matches JD Requirement</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900 serif">Professional Journey</h2>
+            <div class="space-y-4">
+                
+                <div class="bg-white p-6 rounded-lg border-l-4 border-teal-600 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col md:flex-row justify-between mb-2">
+                        <h3 class="font-bold text-lg text-slate-900">Hero Motocorp Ltd <span class="text-sm font-normal text-slate-500 ml-2">Digital Product Manager (Growth Lead)</span></h3>
+                        <span class="text-sm text-stone-500 font-medium">Dec 2022 - Oct 2025</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-3">Building the growth engine for India's largest 2-wheeler manufacturer. Conceptualized <strong>Hero DigiFin</strong> and scaling it to 100% digital disbursement.</p>
+                    <div class="flex gap-4">
+                        <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-1 rounded">ETCIO'25 Award Winner</span>
+                        <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-1 rounded">1000+ Touchpoints</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border-l-4 border-indigo-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col md:flex-row justify-between mb-2">
+                        <h3 class="font-bold text-lg text-slate-900">Medly <span class="text-sm font-normal text-slate-500 ml-2">Senior Manager, Data Strategy</span></h3>
+                        <span class="text-sm text-stone-500 font-medium">Mar 2022 - Oct 2022</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-3">Established the data infrastructure for rigorous experimentation. Built analytics team from scratch. Optimized Unit Economics (CAC/LTV).</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border-l-4 border-red-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col md:flex-row justify-between mb-2">
+                        <h3 class="font-bold text-lg text-slate-900">Vodafone Idea Ltd <span class="text-sm font-normal text-slate-500 ml-2">Product Manager - Digital Payments</span></h3>
+                        <span class="text-sm text-stone-500 font-medium">Oct 2018 - Mar 2022</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-3">Managed ~300 Cr/month revenue portfolio. Architected the massive Vi brand integration for digital platforms. +15 Point TNPS increase.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border-l-4 border-slate-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col md:flex-row justify-between mb-2">
+                        <h3 class="font-bold text-lg text-slate-900">Vodafone Italy <span class="text-sm font-normal text-slate-500 ml-2">Principal Data Analyst</span></h3>
+                        <span class="text-sm text-stone-500 font-medium">Sep 2016 - Sep 2018</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-3">Centre of Excellence for Big Data. Built ML models for churn prediction and campaign targeting using Python/SAS.</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center pt-10 pb-6 border-t border-stone-200">
+            <p class="text-slate-500 text-sm">Designed & Engineered by Dwip Sengupta for OpenAI.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Data Store
+        const funnelData = {
+            acquisition: {
+                title: "Acquisition: Scaling Reach",
+                content: "At <strong>Hero Motocorp</strong>, I didn't just manage a product; I built a new acquisition channel. I conceptualized and scaled <strong>Hero DigiFin</strong>, a marketplace connecting riders with financiers. <br><br><strong>Key Result:</strong> Scaled adoption to <strong>1,000+ touchpoints</strong> across India, effectively digitizing the top of the funnel for vehicle sales. At <strong>Vodafone</strong>, I led the acquisition strategy during the massive Vi brand integration, ensuring seamless migration of millions of users.",
+                metrics: { label: "Touchpoints Scaled", value: 1000, suffix: "+" },
+                chartData: [200, 450, 800, 1000],
+                chartLabel: "Touchpoint Growth (Quarterly)"
+            },
+            activation: {
+                title: "Activation: Removing Friction",
+                content: "Growth is often blocked by friction. At Hero, the loan application process was the bottleneck. I deployed data-driven interventions to streamline the flow.<br><br><strong>Key Result:</strong> Reduced Loan Sanction Turnaround Time (TAT) by <strong>8x</strong>. Increased sanction rate by <strong>10%+</strong>. This directly improved the 'Activation' rate of the funnel.",
+                metrics: { label: "TAT Reduction", value: 8, suffix: "x" },
+                chartData: [48, 24, 12, 6],
+                chartLabel: "Loan TAT (Hours -> Mins)"
+            },
+            retention: {
+                title: "Retention: Engineering Loyalty",
+                content: "Retention requires understanding user behavior. At <strong>Vodafone Idea</strong>, I redesigned the transaction experience based on behavioral analysis.<br><br><strong>Key Result:</strong> Achieved a <strong>15-point increase in TNPS</strong> (Transactional Net Promoter Score). Currently leading the tech modernization of <strong>Hero GoodLife</strong> loyalty platform on Azure to re-engage millions of users.",
+                metrics: { label: "TNPS Uplift", value: 15, suffix: " pts" },
+                chartData: [45, 50, 55, 60],
+                chartLabel: "NPS Score Trend"
+            },
+            revenue: {
+                title: "Revenue: Monetization at Scale",
+                content: "I have managed massive P&Ls. At <strong>Vodafone Idea</strong>, I owned the digital payments roadmap.<br><br><strong>Key Result:</strong> Generated <strong>~INR 300 Cr in monthly revenue</strong>. Delivered <strong>2X growth</strong> in digital payment volume through rigorous optimization of the payment gateway success rates.",
+                metrics: { label: "Monthly Revenue", value: 300, suffix: " Cr" },
+                chartData: [150, 200, 250, 300],
+                chartLabel: "Revenue Growth (INR Cr)"
+            },
+            infrastructure: {
+                title: "Infrastructure: The AI/Data Backbone",
+                content: "Sustainable growth needs a strong tech foundation. At <strong>Medly</strong>, I built the analytics function from scratch (0 to 7 analysts) and established measurement frameworks for A/B testing.<br><br><strong>Technical Expertise:</strong> At <strong>Vodafone Italy</strong>, I built ML models (Python/SAS) for churn prediction. I bridge the gap between Growth and Engineering.",
+                metrics: { label: "Team Built", value: 7, suffix: " Analysts" },
+                chartData: [0, 2, 5, 7],
+                chartLabel: "Team Scale Up"
+            }
+        };
+
+        // DOM Elements
+        const contentDiv = document.getElementById('funnel-content');
+        const buttons = document.querySelectorAll('.funnel-step');
+        let impactChartInstance = null;
+        let fitmentChartInstance = null;
+
+        // Initialize Charts & Content
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFunnel('acquisition'); // Default View
+            renderFitmentChart();
+        });
+
+        // Function to Update Funnel Content
+        function updateFunnel(stage) {
+            // Update Active State on Buttons
+            buttons.forEach(btn => {
+                btn.classList.remove('active-step', 'bg-teal-50');
+                btn.classList.add('border-transparent');
+            });
+            const activeBtn = document.getElementById(`btn-${stage}`);
+            activeBtn.classList.add('active-step');
+            activeBtn.classList.remove('border-transparent');
+
+            // Update Text Content
+            const data = funnelData[stage];
+            contentDiv.innerHTML = `
+                <div class="animate-fade-in-up">
+                    <h3 class="text-2xl font-bold text-teal-800 mb-4">${data.title}</h3>
+                    <div class="prose text-slate-600 mb-6">${data.content}</div>
+                    <div class="flex items-center gap-4 mb-2">
+                        <div class="p-4 bg-stone-100 rounded-lg border border-stone-200">
+                            <span class="block text-xs font-bold text-stone-500 uppercase">${data.metrics.label}</span>
+                            <span class="text-3xl font-bold text-slate-800">${data.metrics.value}<span class="text-teal-600 text-xl">${data.metrics.suffix}</span></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Update Chart
+            updateImpactChart(data.chartLabel, data.chartData);
+        }
+
+        // Chart.js: Impact Chart
+        function updateImpactChart(label, data) {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            
+            if (impactChartInstance) {
+                impactChartInstance.destroy();
+            }
+
+            impactChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'], // Generic time labels for visual
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: '#0f766e', // Teal 700
+                        borderRadius: 4,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: true, color: '#f5f5f4' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: true, labels: { font: { family: 'Inter' } } }
+                    }
+                }
+            });
+        }
+
+        // Chart.js: Fitment Radar Chart
+        function renderFitmentChart() {
+            const ctx = document.getElementById('fitmentChart').getContext('2d');
+            
+            fitmentChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Product Growth', 'Data/AI/ML', 'India Market', 'Experimentation', 'Leadership'],
+                    datasets: [{
+                        label: 'OpenAI Requirement',
+                        data: [100, 100, 100, 100, 100],
+                        fill: true,
+                        backgroundColor: 'rgba(168, 162, 158, 0.2)', // Stone 400
+                        borderColor: 'rgba(168, 162, 158, 1)',
+                        pointBackgroundColor: 'rgba(168, 162, 158, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(168, 162, 158, 1)'
+                    }, {
+                        label: 'My Profile',
+                        data: [95, 90, 100, 95, 90],
+                        fill: true,
+                        backgroundColor: 'rgba(20, 184, 166, 0.2)', // Teal 500
+                        borderColor: '#0f766e', // Teal 700
+                        pointBackgroundColor: '#0f766e',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0f766e'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e7e5e4' },
+                            grid: { color: '#e7e5e4' },
+                            pointLabels: {
+                                font: { size: 12, family: 'Inter', weight: 'bold' },
+                                color: '#475569'
+                            },
+                            suggestedMin: 50,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
