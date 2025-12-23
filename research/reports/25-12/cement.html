@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Cement Sector Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        /* Custom scrollbar for data tables if needed */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .active-tab {
+            border-bottom: 3px solid #d97706; /* Amber-600 */
+            color: #1e293b; /* Slate-800 */
+            font-weight: 600;
+        }
+        .region-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <!-- Chosen Palette: "Concrete & Safety" - Backgrounds: Slate-50/Gray-100 (Concrete), Text: Slate-800, Accents: Amber-600 (Construction/Safety Orange), Blue-600 (Corporate/Blue Chip). Minimalistic and professional. -->
+    
+    <!-- Application Structure Plan:
+        1. Hero Section: Title and "Bottom Line Up Front" (Investment Thesis Summary).
+        2. Industry Landscape: Tabbed interface. Tab 1: Market Share (Donut Chart). Tab 2: Regional Dynamics (Interactive Grid). Rationale: Cement is a regional play; users need to understand the map before the money.
+        3. Financial Core: Dashboard with specific metric toggles (EBITDA/t, Utilization, Leverage). Rationale: Allow comparison of complex metrics without cluttering the screen.
+        4. Drivers & Drags: Split screen interactive list. Left: Tailwinds (Demand). Right: Headwinds (Costs). User clicks to expand details. Rationale: Clearly separates positive and negative factors for balanced analysis.
+        5. Future Outlook: Interactive Timeline (Short, Mid, Long term buttons). Rationale: Distinct time horizons have distinct drivers (elections vs. green cement).
+        6. The Moat & Risks: Card-based summary of competitive advantages and risks.
+    -->
+
+    <!-- Visualization & Content Choices:
+        1. Market Share: Chart.js Donut. Goal: Show consolidation. Interaction: Tooltip hover.
+        2. Financials: Chart.js Bar/Line (Switchable). Goal: Compare efficiency. Interaction: Buttons to swap data datasets.
+        3. Regional Map: CSS Grid of Cards. Goal: Explain regional nuances. Interaction: Click to highlight "Pricing Power" or "Oversupply".
+        4. Outlook: HTML/JS Tabbed Timeline. Goal: Temporal analysis.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 leading-relaxed">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-tight text-slate-800">
+                        <span class="text-amber-600">Build</span>India
+                    </span>
+                    <span class="ml-4 text-xs font-medium text-slate-500 uppercase tracking-widest hidden sm:block">Cement Sector Analysis</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                    <span class="mr-1">←</span> Research - Back
+                    </a>
+                    <a href="#landscape" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition">Landscape</a>
+                    <a href="#drivers" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition">Drivers</a>
+                    <a href="#financials" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition">Financials</a>
+                    <a href="#outlook" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition">Outlook</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Investment Thesis -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">
+                Concrete Foundations: <br class="hidden sm:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-500">The Indian Cement Sector Thesis</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg text-slate-600 mb-10">
+                A long-term investment analysis of India's infrastructure backbone. 
+                Analyzing consolidation, capex cycles, and the road to green cement.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm">
+                    <h3 class="font-bold text-amber-800">The Opportunity</h3>
+                    <p class="text-sm text-slate-700 mt-1">Government capex push (PM Gati Shakti) & housing revival driving multi-year demand growth.</p>
+                </div>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg shadow-sm">
+                    <h3 class="font-bold text-blue-800">The Play</h3>
+                    <p class="text-sm text-slate-700 mt-1">Market consolidation favors top players with pricing power and cost efficiencies.</p>
+                </div>
+                <div class="bg-slate-100 border-l-4 border-slate-500 p-4 rounded-r-lg shadow-sm">
+                    <h3 class="font-bold text-slate-800">The Risk</h3>
+                    <p class="text-sm text-slate-700 mt-1">Volatile input costs (fuel/petcoke) and regional oversupply pockets.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section 1: Industry Structure & Landscape -->
+    <section id="landscape" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">Industry Structure & Landscape</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">
+                    Understanding the Indian cement sector requires analyzing two key pillars: the rapid consolidation among top players and the distinct regional supply-demand dynamics. Because cement is a high-volume, low-value commodity, freight costs make it a strictly regional business.
+                </p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex justify-center space-x-8 border-b border-slate-200 mb-8">
+                <button onclick="switchLandscapeTab('marketShare')" id="tab-marketShare" class="active-tab pb-4 px-2 text-sm font-medium transition focus:outline-none">
+                    Market Consolidation
+                </button>
+                <button onclick="switchLandscapeTab('regions')" id="tab-regions" class="pb-4 px-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition focus:outline-none">
+                    Regional Dynamics
+                </button>
+            </div>
+
+            <!-- Content Container -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10 min-h-[500px]">
+                
+                <!-- View 1: Market Share -->
+                <div id="view-marketShare" class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center animate-fade-in">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">The Race for Dominance</h3>
+                        <p class="text-slate-600 mb-4">
+                            The industry is undergoing a massive consolidation phase. The top 5 players now command significant pricing power. 
+                            <strong class="text-slate-900">Adani's entry</strong> (via Ambuja/ACC) has accelerated capacity expansion plans across the board.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="h-6 w-6 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs font-bold mt-0.5 mr-3">1</span>
+                                <span class="text-sm text-slate-700"><strong>UltraTech:</strong> Clear market leader, aggressive capacity expansion.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="h-6 w-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold mt-0.5 mr-3">2</span>
+                                <span class="text-sm text-slate-700"><strong>Adani (Ambuja/ACC):</strong> Recent major entrant, focusing on cost optimization and supply chain.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="h-6 w-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold mt-0.5 mr-3">3</span>
+                                <span class="text-sm text-slate-700"><strong>Shree Cement:</strong> The cost leader, historically dominant in the North.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- View 2: Regional Dynamics -->
+                <div id="view-regions" class="hidden animate-fade-in">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- North -->
+                        <div class="region-card bg-slate-50 p-6 rounded-xl border border-slate-200 cursor-pointer transition hover:border-amber-400" onclick="showRegionDetails('north')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-slate-900">North India</h4>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">Pricing Power</span>
+                            </div>
+                            <p class="text-xs text-slate-500">High utilization, consolidated market.</p>
+                        </div>
+                        
+                        <!-- Central -->
+                        <div class="region-card bg-slate-50 p-6 rounded-xl border border-slate-200 cursor-pointer transition hover:border-amber-400" onclick="showRegionDetails('central')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-slate-900">Central India</h4>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded">Balanced</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Gateway to all markets, steady demand.</p>
+                        </div>
+
+                        <!-- East -->
+                        <div class="region-card bg-slate-50 p-6 rounded-xl border border-slate-200 cursor-pointer transition hover:border-amber-400" onclick="showRegionDetails('east')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-slate-900">East India</h4>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded">Oversupplied</span>
+                            </div>
+                            <p class="text-xs text-slate-500">High competition, lower margins.</p>
+                        </div>
+
+                        <!-- West -->
+                        <div class="region-card bg-slate-50 p-6 rounded-xl border border-slate-200 cursor-pointer transition hover:border-amber-400" onclick="showRegionDetails('west')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-slate-900">West India</h4>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">Stable</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Driven by real estate/infra in MH/GJ.</p>
+                        </div>
+
+                        <!-- South -->
+                        <div class="region-card bg-slate-50 p-6 rounded-xl border border-slate-200 cursor-pointer transition hover:border-amber-400" onclick="showRegionDetails('south')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-slate-900">South India</h4>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded">Fragmented</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Highest capacity, lower utilization.</p>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Details Box -->
+                    <div id="region-detail-box" class="mt-8 p-6 bg-amber-50 rounded-xl border border-amber-200">
+                        <h4 id="region-title" class="text-lg font-bold text-amber-900 mb-2">Select a region above</h4>
+                        <p id="region-desc" class="text-amber-800 text-sm">Click on a card to see the specific demand-supply scenario and top players for that region.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Demand & Cost (Drivers & Headwinds) -->
+    <section id="drivers" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">Forces at Play</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">
+                    The investment thesis relies on the balance between robust demand drivers (Tailwinds) and the volatile cost structure (Headwinds). Click items below to explore the impact.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tailwinds (Demand) -->
+                <div class="bg-slate-50 rounded-2xl p-6 border-t-4 border-green-500 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                        <span class="text-2xl mr-2">🚀</span> Demand Drivers (Tailwinds)
+                    </h3>
+                    <div class="space-y-4">
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Infrastructure Push (Gati Shakti)</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                The National Infrastructure Pipeline (NIP) and budget allocations for roads, bridges, and metros are the single biggest demand driver. Government capex is directly correlated to cement volume growth.
+                            </div>
+                        </details>
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Housing & Real Estate Cycle</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                Housing accounts for ~60-65% of cement demand. With PMAY (Pradhan Mantri Awas Yojana) in rural areas and a revival in urban real estate, the consumption base is expanding.
+                            </div>
+                        </details>
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Private Capex Revival</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                As industrial capacity utilization hits 75%+, private sector capex is returning, creating a third leg of demand alongside Infra and Housing.
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Headwinds (Costs) -->
+                <div class="bg-slate-50 rounded-2xl p-6 border-t-4 border-red-500 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                        <span class="text-2xl mr-2">⚠️</span> Cost Risks (Headwinds)
+                    </h3>
+                    <div class="space-y-4">
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Power & Fuel (Petcoke/Coal)</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                Power & Fuel constitute ~30% of total costs. Volatility in international Petcoke and Coal prices can severely impact EBITDA margins.
+                            </div>
+                        </details>
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Logistics & Freight</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                Cement is bulky. Freight is another ~30% of cost. Rising diesel prices or railway freight hikes directly eat into profitability.
+                            </div>
+                        </details>
+                        <details class="group bg-white rounded-lg border border-slate-200 cursor-pointer">
+                            <summary class="flex justify-between items-center p-4 font-medium text-slate-800 list-none">
+                                <span>Regulatory & Environmental</span>
+                                <span class="transition group-open:rotate-180">▼</span>
+                            </summary>
+                            <div class="px-4 pb-4 text-sm text-slate-600">
+                                Stricter environmental norms regarding emissions and limestone mining auctions can increase compliance costs and limit raw material security.
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Financial Health Dashboard -->
+    <section id="financials" class="py-16 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <!-- Controls & Context -->
+                <div class="col-span-1">
+                    <h2 class="text-3xl font-bold text-white mb-4">Financial Health Check</h2>
+                    <p class="text-slate-400 mb-6 text-sm">
+                        Analyze the sector using three critical KPIs. <br><br>
+                        <strong>EBITDA/Tonne</strong> is the ultimate profitability metric. <br>
+                        <strong>Capacity Utilization</strong> signals pricing power. <br>
+                        <strong>Net Debt/EBITDA</strong> indicates balance sheet strength for expansion.
+                    </p>
+                    
+                    <div class="space-y-3">
+                        <button onclick="updateFinancialChart('ebitda')" class="w-full text-left px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 focus:bg-amber-600 focus:text-white transition flex justify-between items-center group">
+                            <span class="font-semibold">EBITDA per Tonne (₹)</span>
+                            <span class="text-slate-500 group-focus:text-white">→</span>
+                        </button>
+                        <button onclick="updateFinancialChart('utilization')" class="w-full text-left px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 focus:bg-amber-600 focus:text-white transition flex justify-between items-center group">
+                            <span class="font-semibold">Capacity Utilization (%)</span>
+                            <span class="text-slate-500 group-focus:text-white">→</span>
+                        </button>
+                        <button onclick="updateFinancialChart('leverage')" class="w-full text-left px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 focus:bg-amber-600 focus:text-white transition flex justify-between items-center group">
+                            <span class="font-semibold">Net Debt / EBITDA (x)</span>
+                            <span class="text-slate-500 group-focus:text-white">→</span>
+                        </button>
+                    </div>
+
+                    <div id="financial-context" class="mt-8 p-4 bg-slate-800 rounded-lg border border-slate-700 text-sm text-slate-300">
+                        Select a metric to see the industry trend.
+                    </div>
+                </div>
+
+                <!-- Chart Area -->
+                <div class="col-span-1 lg:col-span-2 bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700">
+                    <div class="chart-container">
+                        <canvas id="financialChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Future Outlook & Moat -->
+    <section id="outlook" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Timeline -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 text-center mb-10">Strategic Outlook Timeline</h2>
+                
+                <div class="flex flex-col md:flex-row justify-center items-stretch gap-4">
+                    <!-- Short Term -->
+                    <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border-t-4 border-amber-400 hover:shadow-md transition">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Short Term (1-2 Years)</h4>
+                        <div class="text-sm text-slate-600 space-y-2">
+                            <p>• <strong>Price Hikes:</strong> Expected post-elections to pass on fuel costs.</p>
+                            <p>• <strong>Demand:</strong> Pre-election government spending peak.</p>
+                            <p>• <strong>Watch:</strong> Monsoon impact on rural housing.</p>
+                        </div>
+                    </div>
+
+                    <!-- Mid Term -->
+                    <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500 hover:shadow-md transition">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Mid Term (3-5 Years)</h4>
+                        <div class="text-sm text-slate-600 space-y-2">
+                            <p>• <strong>Capacity Pipeline:</strong> Massive supply addition (80-100MT). Will supply outpace demand?</p>
+                            <p>• <strong>Consolidation:</strong> Smaller players exiting; top 5 share >60%.</p>
+                        </div>
+                    </div>
+
+                    <!-- Long Term -->
+                    <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500 hover:shadow-md transition">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Long Term (5+ Years)</h4>
+                        <div class="text-sm text-slate-600 space-y-2">
+                            <p>• <strong>Green Cement:</strong> Transition to WHRS (Waste Heat Recovery) & Renewable Energy.</p>
+                            <p>• <strong>Sustainability:</strong> Carbon footprint reduction becomes a key license to operate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moat Analysis -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6">Identifying the Economic Moat</h3>
+                <p class="text-slate-600 mb-6">In a commodity business, the "Moat" (competitive advantage) comes from cost leadership and efficiency, not product differentiation.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <div class="text-2xl mb-2">🏭</div>
+                        <h5 class="font-bold text-slate-900">Scale & Cost</h5>
+                        <p class="text-xs text-slate-500 mt-1">Lower fixed costs per tonne due to massive capacity (e.g., UltraTech).</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <div class="text-2xl mb-2">🚛</div>
+                        <h5 class="font-bold text-slate-900">Logistics Network</h5>
+                        <p class="text-xs text-slate-500 mt-1">Efficient railway sidings and grinding units near consumption centers.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h5 class="font-bold text-slate-900">Energy Efficiency</h5>
+                        <p class="text-xs text-slate-500 mt-1">High share of Green Power/WHRS reduces volatility of coal prices.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <div class="text-2xl mb-2">🤝</div>
+                        <h5 class="font-bold text-slate-900">Brand Recall</h5>
+                        <p class="text-xs text-slate-500 mt-1">Premium pricing in the "Trade" (Retail) segment vs "Non-Trade" (Institutional).</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">Investment Analysis: Indian Cement Sector. For educational purposes only.</p>
+            <p class="text-xs mt-2">Data sources: Industry Reports, Quarterly Filings, CRISIL/ICRA (Simulated Data).</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Landscape Tab Logic ---
+        function switchLandscapeTab(viewId) {
+            // Hide all views
+            document.getElementById('view-marketShare').classList.add('hidden');
+            document.getElementById('view-regions').classList.add('hidden');
+            
+            // Remove active styles from tabs
+            document.getElementById('tab-marketShare').classList.remove('active-tab', 'text-slate-800');
+            document.getElementById('tab-marketShare').classList.add('text-slate-500');
+            document.getElementById('tab-regions').classList.remove('active-tab', 'text-slate-800');
+            document.getElementById('tab-regions').classList.add('text-slate-500');
+
+            // Show selected view and activate tab
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            document.getElementById('tab-' + viewId).classList.add('active-tab', 'text-slate-800');
+            document.getElementById('tab-' + viewId).classList.remove('text-slate-500');
+        }
+
+        // --- 2. Regional Map Logic ---
+        const regionData = {
+            'north': {
+                title: 'North India (Pricing Power)',
+                desc: 'Highly consolidated market with limited capacity addition. Utilization is high (>85%). Players enjoy strong pricing power. <br><strong>Top Players:</strong> Shree Cement, UltraTech.',
+                color: 'bg-green-50'
+            },
+            'central': {
+                title: 'Central India (Balanced)',
+                desc: 'Strategically important as it borders all other regions. Utilization is improving. Demand driven by UP and MP infrastructure projects.<br><strong>Top Players:</strong> UltraTech, MP Birla.',
+                color: 'bg-yellow-50'
+            },
+            'east': {
+                title: 'East India (Oversupplied)',
+                desc: 'Historically high growth, but massive capacity influx has led to pricing pressure. Lowest prices in the country currently.<br><strong>Top Players:</strong> Nuvoco Vistas, Dalmia Bharat.',
+                color: 'bg-red-50'
+            },
+            'west': {
+                title: 'West India (Stable)',
+                desc: 'Mature market driven by Maharashtra and Gujarat. Real estate revival in Mumbai is a key driver. Moderate pricing power.<br><strong>Top Players:</strong> UltraTech, Ambuja.',
+                color: 'bg-green-50'
+            },
+            'south': {
+                title: 'South India (Fragmented)',
+                desc: 'Plagued by overcapacity for decades. Highly fragmented with many regional players (Ramco, India Cements). Pricing is volatile.<br><strong>Top Players:</strong> UltraTech, Ramco.',
+                color: 'bg-red-50'
+            }
+        };
+
+        function showRegionDetails(regionKey) {
+            const data = regionData[regionKey];
+            const box = document.getElementById('region-detail-box');
+            const title = document.getElementById('region-title');
+            const desc = document.getElementById('region-desc');
+
+            title.innerText = data.title;
+            desc.innerHTML = data.desc;
+            
+            // Reset classes
+            box.className = `mt-8 p-6 rounded-xl border transition-colors duration-300 ${data.color} border-slate-200`;
+        }
+
+        // --- 3. Chart.js Initialization ---
+        
+        // A. Market Share Donut
+        const ctxShare = document.getElementById('marketShareChart').getContext('2d');
+        const marketShareChart = new Chart(ctxShare, {
+            type: 'doughnut',
+            data: {
+                labels: ['UltraTech', 'Adani (Ambuja/ACC)', 'Shree Cement', 'Dalmia Bharat', 'Others'],
+                datasets: [{
+                    data: [30, 20, 15, 8, 27], // Simulated Market Share
+                    backgroundColor: ['#1e293b', '#2563eb', '#f59e0b', '#64748b', '#cbd5e1'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // B. Financial Charts (Dynamic)
+        let financialChartInstance = null;
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+
+        const financialData = {
+            'ebitda': {
+                label: 'Avg EBITDA/Tonne (₹)',
+                labels: ['FY22', 'FY23', 'FY24 (E)', 'FY25 (P)'],
+                data: [1250, 950, 1100, 1350], // Dip in FY23 due to fuel costs, recovery expected
+                borderColor: '#fbbf24', // Amber
+                backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                context: "FY23 saw margins compress due to high petcoke prices. Margins are recovering as fuel costs stabilize and operating leverage kicks in."
+            },
+            'utilization': {
+                label: 'Capacity Utilization (%)',
+                labels: ['FY22', 'FY23', 'FY24 (E)', 'FY25 (P)'],
+                data: [68, 72, 78, 82],
+                borderColor: '#3b82f6', // Blue
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                context: "Utilization is inching up towards the 80% mark. Historically, >80% utilization triggers strong pricing power for manufacturers."
+            },
+            'leverage': {
+                label: 'Net Debt / EBITDA (x)',
+                labels: ['FY22', 'FY23', 'FY24 (E)', 'FY25 (P)'],
+                data: [1.2, 1.5, 1.1, 0.8],
+                borderColor: '#10b981', // Emerald
+                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                context: "Balance sheets are healthy. Top players are deleveraging despite capex, thanks to strong cash flow generation."
+            }
+        };
+
+        function updateFinancialChart(metric) {
+            const data = financialData[metric];
+            
+            // Update Context Text
+            document.getElementById('financial-context').innerText = data.context;
+
+            // Destroy old chart if exists
+            if (financialChartInstance) {
+                financialChartInstance.destroy();
+            }
+
+            // Create new chart
+            financialChartInstance = new Chart(ctxFin, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: data.label,
+                        data: data.data,
+                        borderColor: data.borderColor,
+                        backgroundColor: data.backgroundColor,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#cbd5e1' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#cbd5e1' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#white' } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)' }
+                    }
+                }
+            });
+        }
+
+        // Initialize with EBITDA
+        updateFinancialChart('ebitda');
+
+    </script>
+</body>
+</html>

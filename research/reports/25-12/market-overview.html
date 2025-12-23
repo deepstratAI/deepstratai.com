@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Equity Strategy 2025: CIO Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        :root {
+            --primary: #1e3a8a; /* Deep Blue */
+            --accent: #ca8a04; /* Gold */
+            --bg-neutral: #f8fafc;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-neutral);
+            color: #334155;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Chart Container Styling - Strict Constraints */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            max-height: 400px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+                max-height: 300px;
+            }
+        }
+
+        /* Interactive Elements */
+        .sector-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .sector-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .sector-card.active {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .traffic-light {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .light-green { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
+        .light-yellow { background-color: #eab308; box-shadow: 0 0 10px #eab308; }
+        .light-red { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+
+        .theme-badge {
+            transition: all 0.3s;
+        }
+        .theme-badge:hover {
+            background-color: #1e3a8a;
+            color: white;
+        }
+    </style>
+    <!-- Chosen Palette: "Bombay Bourse". Background: Slate-50 (#f8fafc). Primary: Deep Blue (#1e3a8a) representing trust/stability. Accent: Gold (#ca8a04) for wealth/returns. Functional colors: Red/Yellow/Green for valuation signals. -->
+    <!-- Application Structure Plan: 
+        1. CIO's Desk (Header): High-level market stance.
+        2. The Strategy Matrix (Visual Navigation): A Bubble Chart plotting 'Earnings Visibility' vs 'Valuation Comfort'. This acts as the primary navigation to select sectors.
+        3. Sector Deep Dive (Dynamic Content): Detailed analysis of the selected sector with Time-Horizon tabs (Short/Mid/Long) and sub-sector breakdown.
+        4. Thematic Overlays (Filters): Three cards for 'PSU', 'Manufacturing', 'Rural'. Clicking them highlights relevant sectors in the matrix and list.
+        5. Future Outlook (Summary): Concluding thoughts on the 5-year horizon.
+        Rationale: Investors think in terms of Risk (Valuation) vs Reward (Earnings). The matrix visualizes this immediately. Drill-downs allow for granular research without overwhelming the user initially.
+    -->
+    <!-- Visualization & Content Choices:
+        1. Strategy Matrix: Chart.js Bubble Chart. X=Valuation Comfort, Y=Earnings Visibility, R=Market Weight. Goal: Compare & Select.
+        2. Sector Cards: Grid layout. Goal: Alternative Navigation & Quick Status (Traffic Light).
+        3. Time Horizon Tabs: Simple JS Tabs. Goal: Structured reading of the prompt's analysis.
+        4. Theme Indicators: CSS badges. Goal: Cross-reference structural themes.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. 
+    -->
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header / CIO's Desk -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800 serif">India Equity <span class="text-blue-900">Compass</span></h1>
+                <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Sectoral & Thematic Strategy Report</p>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                <span class="mr-1">←</span> Research - Back
+                </a>
+                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>Value</span>
+                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>Hold</span>
+                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>Expensive</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Introduction -->
+        <section class="mb-12 text-center max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 serif">State of the Market: The "Amrit Kaal" Transition</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Welcome to the strategic outlook. We analyze <strong>12 key sectors</strong> through the lens of earnings visibility and valuation comfort. The market is currently bifurcated: "Growth at any Price" in Industrials vs. "Value with Headwinds" in Banks. Explore the matrix below to navigate our thesis.
+            </p>
+        </section>
+
+        <!-- THEMATIC OVERLAYS -->
+        <section class="mb-12">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-blue-900 pl-3">Macro Themes (The Alpha Generators)</h3>
+            <p class="text-sm text-slate-500 mb-4">Click a theme to highlight beneficiaries in the matrix below.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div onclick="toggleTheme('psu')" id="theme-psu" class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-500 group transition-all">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-slate-900 group-hover:text-blue-900">🏛️ PSU Renaissance</h4>
+                        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">Structural</span>
+                    </div>
+                    <p class="text-sm text-slate-600">Re-rating of Public Sector Undertakings driven by governance reform and capex leadership.</p>
+                </div>
+                <div onclick="toggleTheme('pli')" id="theme-pli" class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-500 group transition-all">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-slate-900 group-hover:text-blue-900">🏭 Manufacturing (PLI)</h4>
+                        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">Cyclical + Structural</span>
+                    </div>
+                    <p class="text-sm text-slate-600">China+1 strategy and government incentives driving electronics, pharma, and defence production.</p>
+                </div>
+                <div onclick="toggleTheme('rural')" id="theme-rural" class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-500 group transition-all">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-slate-900 group-hover:text-blue-900">🌾 Rural Recovery</h4>
+                        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">Cyclical</span>
+                    </div>
+                    <p class="text-sm text-slate-600">Monsoon dependency and wage growth indicators signalling a bottoming out of mass consumption.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE MATRIX (Bubble Chart) -->
+        <section class="mb-16 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 serif">The Investment Matrix</h3>
+                    <p class="text-sm text-slate-500 mt-1">X-Axis: Valuation Comfort (Higher is Cheaper) | Y-Axis: Earnings Visibility (Higher is Better)</p>
+                </div>
+                <div class="mt-4 md:mt-0 text-xs text-slate-400">
+                    Click a bubble to view detailed analysis
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="strategyMatrix"></canvas>
+            </div>
+        </section>
+
+        <!-- DEEP DIVE SECTION -->
+        <section id="sector-analysis" class="scroll-mt-24">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                <!-- Dynamic Header -->
+                <div class="bg-slate-900 text-white p-8">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center">
+                        <div>
+                            <span id="detail-category" class="text-blue-300 font-bold tracking-wider text-xs uppercase mb-2 block">Select a sector above</span>
+                            <h2 id="detail-title" class="text-3xl font-bold serif mb-2">Sector Analysis</h2>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <span id="detail-light" class="traffic-light bg-slate-500 shadow-none"></span>
+                                <span id="detail-status" class="font-medium text-slate-300">Interact with the chart to begin</span>
+                            </div>
+                        </div>
+                        <!-- Key Stats / Mini Dashboard for Sector -->
+                        <div id="detail-stats" class="mt-6 md:mt-0 flex space-x-8 opacity-50">
+                            <!-- Stats injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-8">
+                    <!-- Tabs -->
+                    <div class="flex border-b border-slate-200 mb-8 overflow-x-auto">
+                        <button onclick="switchTab('short')" id="tab-short" class="tab-btn active px-6 py-3 text-sm font-medium whitespace-nowrap">Short Term (1-2Y)</button>
+                        <button onclick="switchTab('mid')" id="tab-mid" class="tab-btn px-6 py-3 text-sm font-medium whitespace-nowrap text-slate-500 hover:text-slate-800">Mid Term (3-5Y)</button>
+                        <button onclick="switchTab('long')" id="tab-long" class="tab-btn px-6 py-3 text-sm font-medium whitespace-nowrap text-slate-500 hover:text-slate-800">Long Term (5Y+)</button>
+                        <button onclick="switchTab('sub')" id="tab-sub" class="tab-btn px-6 py-3 text-sm font-medium whitespace-nowrap text-slate-500 hover:text-slate-800">Sub-Sectors</button>
+                    </div>
+
+                    <!-- Dynamic Text Content -->
+                    <div id="tab-content" class="min-h-[200px]">
+                        <p class="text-slate-500 italic">Please select a sector from the matrix bubble chart above to view the deep-dive analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTOR LIST (Alternative Nav) -->
+        <section class="mt-16">
+            <h3 class="text-lg font-bold text-slate-800 mb-6">Sector Quick List</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="sector-grid">
+                <!-- Generated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-4 serif text-lg text-slate-200">India Equity Strategy</p>
+            <p class="text-sm">For institutional investor use only. Analysis based on current market data and policy frameworks.</p>
+            <p class="text-xs mt-4 opacity-50">&copy; 2025 Market Research Division. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA MODEL ---
+        // Valuation Score: 1 (Expensive) to 10 (Cheap/Value)
+        // Earnings Visibility: 1 (Opaque) to 10 (Clear/High Growth)
+        // Traffic: 'red', 'yellow', 'green'
+        
+        const sectors = {
+            'financials': {
+                name: 'Financials',
+                category: 'The Backbone',
+                valuation: 8, // Relatively cheap, especially PVT banks
+                visibility: 9, // Credit growth is visible
+                weight: 30, // Market weight
+                traffic: 'green',
+                status: 'Overweight (Value Buy)',
+                themes: ['psu'],
+                content: {
+                    short: "<strong>Earnings Momentum:</strong> NIMs (Net Interest Margins) likely to compress slightly as deposit rates reprice, but volume growth (15%+) will offset this. <br><br><strong>Key Risk:</strong> RBI's risk-weight norms on unsecured lending may dampen NBFC growth. Deposit mobilization remains a challenge compared to credit demand.",
+                    mid: "<strong>Consolidation:</strong> The 'Financialization of Savings' trend continues. We expect Private Banks to regain market share from PSUs in the deposit war. Housing Finance Companies (HFCs) to benefit from the revival in real estate cycle.",
+                    long: "<strong>Structural Tailwinds:</strong> Credit-to-GDP ratio in India is still ~60% vs 150%+ in developed markets. Long runway for growth in Insurance and AMCs as per capita income rises to $4000.",
+                    sub: "<ul class='list-disc pl-5 space-y-2'><li><strong>Banking:</strong> PVT Banks > PSU Banks on valuation comfort.</li><li><strong>NBFCs:</strong> Prefer Gold Loan players (counter-cyclical) over Unsecured lenders.</li><li><strong>Insurance:</strong> Life Insurance penetration remains low; focus on protection mix.</li></ul>"
+                }
+            },
+            'it': {
+                name: 'IT Services',
+                category: 'Tech & Services',
+                valuation: 6, // Fair
+                visibility: 5, // US Recession fears
+                weight: 15,
+                traffic: 'yellow',
+                status: 'Neutral (Watch Mode)',
+                themes: [],
+                content: {
+                    short: "<strong>Headwinds:</strong> Discretionary spending in US/Europe is paused due to recession fears. Deal wins are steady, but conversion to revenue is slow. Margins may benefit from reduced attrition.",
+                    mid: "<strong>The AI Pivot:</strong> Companies successfully integrating GenAI into their service stacks will command premium pricing. Expect a divergence between Tier-1 players and mid-caps based on AI deal pipeline.",
+                    long: "<strong>Global Outsourcing:</strong> Structural cost arbitrage remains relevant. As global tech spend shifts from 'Digital Transformation' to 'AI Implementation', Indian IT remains the execution engine.",
+                    sub: "<ul class='list-disc pl-5 space-y-2'><li><strong>Tier-1 IT:</strong> Defensive bets with high dividend yield.</li><li><strong>Mid-cap IT:</strong> Higher volatility but better growth potential in niche verticals (ER&D).</li></ul>"
+                }
+            },
+            'newtech': {
+                name: 'New Age Tech',
+                category: 'Tech & Services',
+                valuation: 4, // Still pricey
+                visibility: 7, // Profitability improving
+                weight: 5,
+                traffic: 'yellow',
+                status: 'Selective Accumulation',
+                themes: [],
+                content: {
+                    short: "<strong>Path to Profitability:</strong> Zomato, PB Fintech, and others have shown EBITDA positive quarters. The focus has shifted entirely from 'Growth at all costs' to sustainable unit economics.",
+                    mid: "<strong>Duopolies Forming:</strong> Food delivery and Payments are consolidating into duopolies/oligopolies, granting pricing power (platform fees).",
+                    long: "<strong>Digital Penetration:</strong> India's internet economy is still in early stages. Structural winners in e-commerce and fintech will emerge as dominant index heavyweights.",
+                    sub: "Focus on platform companies with clear dominance (Zomato/Swiggy, Paytm ecosystem)."
+                }
+            },
+            'staples': {
+                name: 'FMCG (Staples)',
+                category: 'Consumption',
+                valuation: 3, // Expensive defensive
+                visibility: 6, // Rural recovery uncertain
+                weight: 10,
+                traffic: 'yellow',
+                status: 'Underweight (Valuation Discomfort)',
+                themes: ['rural'],
+                content: {
+                    short: "<strong>Volume vs Price:</strong> Price-led growth has peaked. Volume growth is sluggish (mid-single digits). All eyes on the monsoon's impact on rural demand recovery.",
+                    mid: "<strong>Margin Expansion:</strong> Easing raw material costs (crude, palm oil) should aid gross margins. Premiumization in urban markets is the key earnings driver.",
+                    long: "<strong>Demographics:</strong> Shift from unbranded to branded consumption is the eternal thesis. However, valuations (50x+ PE) leave little room for error.",
+                    sub: "Prefer companies with higher rural exposure for the recovery trade."
+                }
+            },
+            'auto': {
+                name: 'Auto & Retail',
+                category: 'Consumption',
+                valuation: 5, // Fair to Expensive
+                visibility: 8, // Strong demand in premium
+                weight: 10,
+                traffic: 'green',
+                status: 'Accumulate (Premium Segment)',
+                themes: ['manufacturing'],
+                content: {
+                    short: "<strong>K-Shaped Recovery:</strong> SUVs and Premium Bikes are flying off shelves, while entry-level hatchbacks and commuter bikes struggle. Rural recovery is crucial for the mass segment.",
+                    mid: "<strong>EV Transition:</strong> The shift to Electric Vehicles is accelerating in 2-wheelers. PV OEMs are balancing hybrid vs EV strategies. PLI schemes aiding localized manufacturing.",
+                    long: "<strong>Aspiration:</strong> Rising per capita income drives the shift from 2W to 4W. India is becoming a global auto export hub.",
+                    sub: "<ul class='list-disc pl-5 space-y-2'><li><strong>4-Wheelers:</strong> SUV mix improvement drives margins.</li><li><strong>2-Wheelers:</strong> Best play on rural recovery.</li></ul>"
+                }
+            },
+            'caps': {
+                name: 'Capital Goods',
+                category: 'Industrials',
+                valuation: 2, // Very Expensive
+                visibility: 10, // Excellent Order books
+                weight: 8,
+                traffic: 'red',
+                status: 'Expensive (Wait for Dip)',
+                themes: ['manufacturing', 'psu'],
+                content: {
+                    short: "<strong>Order Book Visibility:</strong> Companies like ABB, Siemens, and L&T are sitting on record order books (3-5x revenue). Execution is the key monitorable.",
+                    mid: "<strong>Private Capex:</strong> We are seeing green shoots in private sector capex (Steel, Cement), complementing the government's infrastructure push.",
+                    long: "<strong>Manufacturing Hub:</strong> India's push to increase manufacturing GDP share to 25% benefits this sector directly. Automation and energy efficiency are secular themes.",
+                    sub: "Valuations are pricing in near-perfection. Any execution delay will lead to correction."
+                }
+            },
+            'defence': {
+                name: 'Defence & Rail',
+                category: 'Industrials',
+                valuation: 1, // Frothy
+                visibility: 9, // Gov push
+                weight: 5,
+                traffic: 'red',
+                status: 'Profit Booking Zone',
+                themes: ['psu', 'manufacturing'],
+                content: {
+                    short: "<strong>Indigenization Push:</strong> Government bans on import lists benefit HAL, BEL, and Mazagon Dock. Order inflows are robust, but stock prices have run up 3-5x in 2 years.",
+                    mid: "<strong>Export Potential:</strong> India is emerging as a defence exporter (BrahMos, Tejas). Railway modernization (Vande Bharat, Kavach) provides 5-year visibility.",
+                    long: "<strong>Strategic Autonomy:</strong> The geopolitical need for self-reliance ensures sustained budgetary allocation irrespective of political cycles.",
+                    sub: "<strong>Railways:</strong> Multi-year re-rating is largely done. <br><strong>Defence:</strong> Focus on execution capability over order book wins."
+                }
+            },
+            'power': {
+                name: 'Power & Utilities',
+                category: 'Energy',
+                valuation: 6, // Fair
+                visibility: 8, // Acute deficit
+                weight: 6,
+                traffic: 'green',
+                status: 'Buy (Defensive Growth)',
+                themes: ['psu'],
+                content: {
+                    short: "<strong>Power Deficit:</strong> Peak power demand is outstripping supply. PLFs (Plant Load Factors) for thermal plants are rising. Merchant power rates remain high.",
+                    mid: "<strong>Renewable Transition:</strong> Aggressive targets (500GW by 2030) drive capex in Solar/Wind. Transmission companies (Power Grid) are critical to evacuate this green power.",
+                    long: "<strong>Energy Security:</strong> Power is a proxy for GDP growth. The mix will shift from Coal to Green, but Coal remains the baseload for the next decade.",
+                    sub: "NTPC/Tata Power are well-placed to bridge the transition gap."
+                }
+            },
+            'oil': {
+                name: 'Oil & Gas',
+                category: 'Energy',
+                valuation: 7, // Cheap
+                visibility: 6, // Volatile
+                weight: 8,
+                traffic: 'yellow',
+                status: 'Tactical Play',
+                themes: ['psu'],
+                content: {
+                    short: "<strong>Margins:</strong> Refining margins (GRMs) are volatile. Marketing margins for OMCs depend on crude prices and election cycles (lack of price hikes).",
+                    mid: "<strong>Gas Economy:</strong> City Gas Distribution (CGD) companies benefit from the government mandate to increase gas share in the energy basket.",
+                    long: "<strong>Terminal Value Risk:</strong> Long-term existential threat from EVs impacts OMCs. Focus is shifting to Petrochemicals and Green Hydrogen.",
+                    sub: "Upstream (ONGC) is a dividend play. CGD is a volume growth play."
+                }
+            },
+            'metals': {
+                name: 'Metals & Cement',
+                category: 'Materials',
+                valuation: 6, // Cyclical
+                visibility: 5, // China factor
+                weight: 6,
+                traffic: 'yellow',
+                status: 'Cyclical Hold',
+                themes: [],
+                content: {
+                    short: "<strong>China Factor:</strong> Metal prices are highly correlated with China's reopening and real estate stimulus. Domestic demand from housing/infra is the cushion.",
+                    mid: "<strong>Consolidation:</strong> Cement sector is consolidating (Adani/Ultratech). Pricing power is returning to large players.",
+                    long: "<strong>Infrastructure Supercycle:</strong> As India builds roads, airports, and homes, volume growth for Cement/Steel is pegged at 1.2x GDP.",
+                    sub: "Prefer Cement (Domestic story) over Metals (Global commodity risk)."
+                }
+            },
+            'chem': {
+                name: 'Chemicals',
+                category: 'Materials',
+                valuation: 5, // Corrected
+                visibility: 4, // Destocking
+                weight: 3,
+                traffic: 'yellow',
+                status: 'Bottom Fishing',
+                themes: ['manufacturing'],
+                content: {
+                    short: "<strong>Destocking Cycle:</strong> The industry is facing headwinds from global inventory destocking and Chinese dumping. Margins are under severe pressure.",
+                    mid: "<strong>China+1:</strong> The structural thesis remains intact. Global agrochem and pharma innovators are diversifying supply chains away from China.",
+                    long: "<strong>R&D Capabilities:</strong> Indian specialty chemical players are moving up the value chain (Contract Research & Manufacturing).",
+                    sub: "Wait for signs of margin stabilization before aggressive entry."
+                }
+            },
+            'pharma': {
+                name: 'Pharma & Hospitals',
+                category: 'Healthcare',
+                valuation: 7, // Reasonable
+                visibility: 8, // Stable
+                weight: 6,
+                traffic: 'green',
+                status: 'Defensive Anchor',
+                themes: ['manufacturing'],
+                content: {
+                    short: "<strong>US Generics:</strong> Pricing pressure in the US market is stabilizing. Domestic branded formulations provide steady double-digit growth.",
+                    mid: "<strong>Hospital Capex:</strong> Major hospital chains are adding beds to cater to rising insurance penetration and Medical Tourism.",
+                    long: "<strong>Biosimilars & CDMO:</strong> The next leg of growth for Indian Pharma. Hospitals benefit from the aging demographic and lifestyle diseases.",
+                    sub: "Hospitals offer better structural visibility than generic pharma exporters."
+                }
+            }
+        };
+
+        // --- STATE & UTILS ---
+        let currentTab = 'short';
+        let currentSector = null;
+        let chartInstance = null;
+        let activeThemes = new Set();
+
+        const colorMap = {
+            'green': '#22c55e',
+            'yellow': '#eab308',
+            'red': '#ef4444'
+        };
+
+        const statusColorMap = {
+            'green': 'text-green-400',
+            'yellow': 'text-yellow-400',
+            'red': 'text-red-400'
+        };
+
+        // --- CHART INITIALIZATION ---
+        function initMatrix() {
+            const ctx = document.getElementById('strategyMatrix').getContext('2d');
+            
+            const dataPoints = Object.keys(sectors).map(key => ({
+                x: sectors[key].valuation,
+                y: sectors[key].visibility,
+                r: sectors[key].weight * 0.8, // Scale radius
+                sectorKey: key,
+                sectorName: sectors[key].name,
+                traffic: sectors[key].traffic
+            }));
+
+            chartInstance = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Sectors',
+                        data: dataPoints,
+                        backgroundColor: (context) => {
+                            const raw = context.raw;
+                            if(!raw) return '#ccc';
+                            // Check theme highlight
+                            if (activeThemes.size > 0) {
+                                const sectorData = sectors[raw.sectorKey];
+                                const hasTheme = sectorData.themes.some(t => activeThemes.has(t));
+                                if (!hasTheme) return '#cbd5e1'; // gray out non-matches
+                            }
+                            return colorMap[raw.traffic] + 'DD'; // Add transparency
+                        },
+                        borderColor: (context) => {
+                            const raw = context.raw;
+                            if (activeThemes.size > 0) {
+                                const sectorData = sectors[raw.sectorKey];
+                                const hasTheme = sectorData.themes.some(t => activeThemes.has(t));
+                                if (hasTheme) return '#1e3a8a'; // Highlight border
+                            }
+                            return '#fff';
+                        },
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const sectorKey = dataPoints[index].sectorKey;
+                            loadSector(sectorKey);
+                            document.getElementById('sector-analysis').scrollIntoView({ behavior: 'smooth' });
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    return `${context.raw.sectorName} (Val: ${context.raw.x}, Vis: ${context.raw.y})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: '← Expensive | Valuation Comfort (1-10) | Cheap →' },
+                            min: 0, max: 11,
+                            grid: { color: '#f1f5f9' }
+                        },
+                        y: {
+                            title: { display: true, text: '← Low | Earnings Visibility (1-10) | High →' },
+                            min: 0, max: 11,
+                            grid: { color: '#f1f5f9' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- CORE LOGIC ---
+        function loadSector(key) {
+            currentSector = key;
+            const data = sectors[key];
+
+            // Update UI Header
+            document.getElementById('detail-category').innerText = data.category;
+            document.getElementById('detail-title').innerText = data.name;
+            
+            // Update Traffic Light
+            const light = document.getElementById('detail-light');
+            light.className = `traffic-light light-${data.traffic}`;
+            
+            const statusText = document.getElementById('detail-status');
+            statusText.innerText = data.status;
+            statusText.className = `font-medium ${data.traffic === 'red' ? 'text-red-300' : data.traffic === 'yellow' ? 'text-yellow-300' : 'text-green-300'}`;
+
+            // Update Mini Dashboard
+            document.getElementById('detail-stats').innerHTML = `
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">${data.valuation}/10</div>
+                    <div class="text-xs text-blue-200 uppercase">Valuation</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">${data.visibility}/10</div>
+                    <div class="text-xs text-blue-200 uppercase">Visibility</div>
+                </div>
+            `;
+            document.getElementById('detail-stats').classList.remove('opacity-50');
+
+            // Render Content
+            renderTabContent();
+
+            // Highlight in Grid
+            document.querySelectorAll('.sector-card').forEach(c => c.classList.remove('active'));
+            const gridCard = document.getElementById(`card-${key}`);
+            if(gridCard) gridCard.classList.add('active');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-blue-900');
+                btn.classList.add('text-slate-500');
+            });
+            document.getElementById(`tab-${tab}`).classList.add('active', 'text-blue-900');
+            document.getElementById(`tab-${tab}`).classList.remove('text-slate-500');
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            if (!currentSector) return;
+            const contentDiv = document.getElementById('tab-content');
+            const data = sectors[currentSector].content;
+            
+            // Fade effect
+            contentDiv.style.opacity = 0;
+            setTimeout(() => {
+                contentDiv.innerHTML = `<div class="text-slate-700 leading-relaxed text-lg animate-fade-in">${data[currentTab]}</div>`;
+                contentDiv.style.opacity = 1;
+            }, 150);
+        }
+
+        function toggleTheme(theme) {
+            const btn = document.getElementById(`theme-${theme}`);
+            
+            if (activeThemes.has(theme)) {
+                activeThemes.delete(theme);
+                btn.classList.remove('border-blue-500', 'bg-blue-50');
+            } else {
+                activeThemes.add(theme);
+                btn.classList.add('border-blue-500', 'bg-blue-50');
+            }
+            
+            // Update Grid highlights
+            renderGrid();
+            
+            // Update Chart
+            chartInstance.update();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('sector-grid');
+            grid.innerHTML = '';
+
+            Object.keys(sectors).forEach(key => {
+                const s = sectors[key];
+                const isActiveTheme = s.themes.some(t => activeThemes.has(t));
+                const dim = activeThemes.size > 0 && !isActiveTheme;
+                
+                const card = document.createElement('div');
+                card.id = `card-${key}`;
+                card.className = `sector-card bg-white p-4 rounded-lg border border-slate-200 ${dim ? 'opacity-40' : 'opacity-100'} ${currentSector === key ? 'active' : ''}`;
+                card.onclick = () => {
+                    loadSector(key);
+                    document.getElementById('sector-analysis').scrollIntoView({ behavior: 'smooth' });
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase">${s.category.split(' ')[0]}</span>
+                        <div class="w-3 h-3 rounded-full bg-${s.traffic === 'green' ? 'green-500' : s.traffic === 'yellow' ? 'yellow-500' : 'red-500'}"></div>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-sm">${s.name}</h4>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initMatrix();
+            renderGrid();
+            
+            // Pre-select Financials
+            setTimeout(() => loadSector('financials'), 500);
+        });
+
+    </script>
+</body>
+</html>

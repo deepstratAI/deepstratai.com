@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Insurance Sector: Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Chart Container Styling Rules - STRICTLY ENFORCED */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Prevent excessive width */
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; /* Base height */
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px; 
+            }
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #0f766e; /* Teal-700 */
+            color: #0f766e;
+            font-weight: 600;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <!-- Chosen Palette: "Trust & Growth" 
+         Backgrounds: Slate-50 (Clean, Professional).
+         Text: Slate-800 (Readable).
+         Accents: Teal-700 (Growth/Wealth), Blue-800 (Trust/Corporate), Rose-600 (Risks).
+    -->
+
+    <!-- Application Structure Plan:
+         1. Hero Section: Executive Summary & "The Big Picture" thesis.
+         2. Interactive Dashboard (Tabs):
+            - Market Landscape: Market share viz (Life vs Non-Life), Segmentation logic.
+            - The Moat: Analysis of competitive advantages (Distribution, Product, Brand) using interactive cards.
+            - Financial Analysis: Key Analyst Metrics (VNB, EV, Solvency) via bar charts.
+            - Drivers & Risks: Side-by-side interactive lists to weigh pros/cons.
+            - Strategy & Outlook: Timeline component and Final Stock Picks/Thesis.
+         3. Rationale: Insurance is complex. Breaking it down into "Landscape", "Moat", and "Numbers" helps the user build a mental model layer by layer.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Market Share: Doughnut Charts (Chart.js). Goal: Show consolidation.
+         2. Financials: Bar/Mixed Charts. Goal: Compare VNB Margins & Solvency.
+         3. Moat Analysis: CSS Grid Cards. Goal: Qualitative comparison of business models.
+         4. Outlook: Clickable Timeline. Goal: Temporal visualization of trends.
+         5. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center gap-2">
+                        <span class="text-2xl">🛡️</span>
+                        <span class="font-bold text-xl tracking-tight text-slate-900">Insure<span class="text-teal-700">India</span> Research</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                    <span class="mr-1">←</span> Research - Back
+                    </a>
+                    <button onclick="switchTab('landscape')" class="text-sm font-medium text-slate-500 hover:text-teal-700 transition">Landscape</button>
+                    <button onclick="switchTab('moat')" class="text-sm font-medium text-slate-500 hover:text-teal-700 transition">The Moat</button>
+                    <button onclick="switchTab('financials')" class="text-sm font-medium text-slate-500 hover:text-teal-700 transition">Financials</button>
+                    <button onclick="switchTab('thesis')" class="text-sm font-medium text-slate-500 hover:text-teal-700 transition">Thesis</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Executive Summary -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-flex items-center rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700 mb-4 ring-1 ring-inset ring-teal-600/20">BFSI Sector Coverage</span>
+                <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-6">The Indian Insurance Opportunity</h1>
+                <p class="text-lg leading-8 text-slate-600 mb-8">
+                    A structural growth story driven by under-penetration (4% vs 7% Global) and financialization of savings. 
+                    We analyze the shift from <span class="font-semibold text-slate-900">Volume (LIC)</span> to <span class="font-semibold text-slate-900">Value (Private Players)</span>.
+                </p>
+                <div class="flex justify-center gap-4 text-sm">
+                    <div class="flex items-center gap-1 text-slate-500"><span class="w-2 h-2 rounded-full bg-green-500"></span> Bullish on Private Life</div>
+                    <div class="flex items-center gap-1 text-slate-500"><span class="w-2 h-2 rounded-full bg-yellow-500"></span> Neutral on General</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Mobile Tab Navigation (Select) -->
+        <div class="md:hidden mb-6">
+            <label for="tabs" class="sr-only">Select a section</label>
+            <select id="tabs" name="tabs" class="block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring-teal-500" onchange="switchTab(this.value)">
+                <option value="landscape">Industry Landscape</option>
+                <option value="moat">The Moat Analysis</option>
+                <option value="financials">Financial Health</option>
+                <option value="drivers">Drivers & Risks</option>
+                <option value="thesis">Investment Thesis</option>
+            </select>
+        </div>
+
+        <!-- Desktop Tab Navigation -->
+        <div class="hidden md:block border-b border-slate-200 mb-8">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <button onclick="switchTab('landscape')" id="tab-landscape" class="tab-btn active whitespace-nowrap py-4 px-1 text-sm font-medium text-teal-700">Industry Landscape</button>
+                <button onclick="switchTab('moat')" id="tab-moat" class="tab-btn whitespace-nowrap py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300">The Moat Analysis</button>
+                <button onclick="switchTab('financials')" id="tab-financials" class="tab-btn whitespace-nowrap py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300">Financial Health</button>
+                <button onclick="switchTab('drivers')" id="tab-drivers" class="tab-btn whitespace-nowrap py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300">Drivers & Risks</button>
+                <button onclick="switchTab('thesis')" id="tab-thesis" class="tab-btn whitespace-nowrap py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300">Strategy & Outlook</button>
+            </nav>
+        </div>
+
+        <!-- SECTIONS -->
+
+        <!-- 1. LANDSCAPE SECTION -->
+        <section id="section-landscape" class="space-y-8 animate-fade-in">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Market Structure & Consolidation</h2>
+                <p class="text-slate-600 mb-6 max-w-4xl">
+                    The industry is bifurcated into Life (Long-term savings/protection) and General (Short-term risk cover). 
+                    While LIC dominates Life by volume, private players like HDFC Life and SBI Life are capturing the "value" share.
+                    The General Insurance sector is seeing the rise of Standalone Health Insurers (SAHI) like Star Health.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <!-- Life Chart -->
+                    <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                        <h3 class="text-sm font-semibold text-slate-900 text-center mb-4">Life Insurance Market Share (New Business Premium)</h3>
+                        <div class="chart-container">
+                            <canvas id="lifeShareChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-xs text-slate-500 text-center">
+                            Note: Private players are gaining share in the high-margin retail segment.
+                        </div>
+                    </div>
+
+                    <!-- General Chart -->
+                    <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                        <h3 class="text-sm font-semibold text-slate-900 text-center mb-4">General Insurance Market Share (GDPU)</h3>
+                        <div class="chart-container">
+                            <canvas id="generalShareChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-xs text-slate-500 text-center">
+                            New India Assurance (PSU) leads, but ICICI Lombard & Star Health are growing faster.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. MOAT SECTION -->
+        <section id="section-moat" class="hidden space-y-8">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-900 mb-4">Analyzing the "Moat"</h2>
+                <p class="text-slate-600 mb-8">
+                    In a commoditized market, competitive advantage stems from distribution reach, product innovation, and trust. 
+                    We evaluate the "Three Pillars of Strength".
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Distribution Card -->
+                    <div class="card-hover bg-blue-50 p-6 rounded-xl border border-blue-100 cursor-pointer" onclick="updateMoatDetail('distribution')">
+                        <div class="text-3xl mb-3">🏦</div>
+                        <h3 class="font-bold text-blue-900 mb-2">1. Distribution (Bancassurance)</h3>
+                        <p class="text-sm text-blue-800">
+                            The strongest moat. Partnerships with large banks (e.g., SBI Life with SBI, HDFC Life with HDFC Bank) ensure low customer acquisition costs (CAC).
+                        </p>
+                        <div class="mt-4 text-xs font-semibold text-blue-700 uppercase tracking-wide">Click for Top Picks</div>
+                    </div>
+
+                    <!-- Product Mix Card -->
+                    <div class="card-hover bg-purple-50 p-6 rounded-xl border border-purple-100 cursor-pointer" onclick="updateMoatDetail('product')">
+                        <div class="text-3xl mb-3">📊</div>
+                        <h3 class="font-bold text-purple-900 mb-2">2. Product Mix Strategy</h3>
+                        <p class="text-sm text-purple-800">
+                            Balancing ULIPs (Volume), Non-Par (Guaranteed Margins), and Protection (High Margin). The right mix drives VNB Margins.
+                        </p>
+                        <div class="mt-4 text-xs font-semibold text-purple-700 uppercase tracking-wide">Click for Analysis</div>
+                    </div>
+
+                    <!-- Brand Card -->
+                    <div class="card-hover bg-amber-50 p-6 rounded-xl border border-amber-100 cursor-pointer" onclick="updateMoatDetail('brand')">
+                        <div class="text-3xl mb-3">🤝</div>
+                        <h3 class="font-bold text-amber-900 mb-2">3. Brand & Persistency</h3>
+                        <p class="text-sm text-amber-800">
+                            Measured by the 13th and 61st-month persistency ratios. High persistency means sticky customers and higher long-term profitability.
+                        </p>
+                        <div class="mt-4 text-xs font-semibold text-amber-700 uppercase tracking-wide">Click for Leaders</div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Detail Box -->
+                <div id="moat-detail-box" class="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-lg">
+                    <h4 id="moat-title" class="text-lg font-bold text-slate-900">Select a pillar above</h4>
+                    <p id="moat-desc" class="text-slate-600 mt-2">Click on a card to see specific analyst insights and company examples.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. FINANCIALS SECTION -->
+        <section id="section-financials" class="hidden space-y-8">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Financial KPIs: The Analyst's Lens</h2>
+                        <p class="text-slate-600 mt-1">Comparing Value of New Business (VNB) Margins and Solvency.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 bg-slate-100 p-1 rounded-lg flex">
+                        <button onclick="toggleFinanceChart('vnb')" id="btn-vnb" class="px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-slate-900 transition">VNB Margins</button>
+                        <button onclick="toggleFinanceChart('solvency')" id="btn-solvency" class="px-4 py-2 text-sm font-medium rounded-md text-slate-500 hover:text-slate-900 transition">Solvency Ratio</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="chart-container">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 bg-slate-50 p-6 rounded-xl border border-slate-100">
+                        <h3 class="font-bold text-slate-900 mb-4">Metric Explainer</h3>
+                        <div id="metric-explainer">
+                            <h4 class="text-sm font-semibold text-teal-700">Value of New Business (VNB)</h4>
+                            <p class="text-sm text-slate-600 mt-1 mb-4">
+                                The present value of future profits from new policies issued.
+                                <br><br>
+                                <strong>VNB Margin:</strong> VNB / Annualized Premium Equivalent (APE). 
+                                <br>
+                                <em>High margin (>25%) indicates a high-quality product mix (Protection/Non-Par).</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DRIVERS & RISKS SECTION -->
+        <section id="section-drivers" class="hidden space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tailwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-xl font-bold text-teal-700 mb-4 flex items-center">
+                        <span class="mr-2">🚀</span> Growth Tailwinds
+                    </h2>
+                    <ul class="space-y-4">
+                        <li class="p-3 bg-teal-50 rounded-lg border border-teal-100 hover:bg-teal-100 transition">
+                            <div class="font-semibold text-slate-900">1. Under-penetration</div>
+                            <p class="text-sm text-slate-600 mt-1">India's Life Insurance penetration is ~3.2% vs Global 3%. The protection gap is massive (~83%).</p>
+                        </li>
+                        <li class="p-3 bg-teal-50 rounded-lg border border-teal-100 hover:bg-teal-100 transition">
+                            <div class="font-semibold text-slate-900">2. Demographics</div>
+                            <p class="text-sm text-slate-600 mt-1">Rising working-age population and "Financialization of Savings" moving away from gold/real estate.</p>
+                        </li>
+                        <li class="p-3 bg-teal-50 rounded-lg border border-teal-100 hover:bg-teal-100 transition">
+                            <div class="font-semibold text-slate-900">3. Regulatory Push (Bima Sugam)</div>
+                            <p class="text-sm text-slate-600 mt-1">IRDAI's "Insurance for All by 2047" and digital marketplaces will reduce distribution costs.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Headwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-xl font-bold text-rose-700 mb-4 flex items-center">
+                        <span class="mr-2">⚠️</span> Key Risks
+                    </h2>
+                    <ul class="space-y-4">
+                        <li class="p-3 bg-rose-50 rounded-lg border border-rose-100 hover:bg-rose-100 transition">
+                            <div class="font-semibold text-slate-900">1. Surrender Value Norms</div>
+                            <p class="text-sm text-slate-600 mt-1">New IRDAI norms increasing surrender values for early exits could impact margins of Non-Par products.</p>
+                        </li>
+                        <li class="p-3 bg-rose-50 rounded-lg border border-rose-100 hover:bg-rose-100 transition">
+                            <div class="font-semibold text-slate-900">2. Medical Inflation</div>
+                            <p class="text-sm text-slate-600 mt-1">For Health insurers (SAHI), post-COVID medical inflation (15-20%) is pressuring claim ratios.</p>
+                        </li>
+                        <li class="p-3 bg-rose-50 rounded-lg border border-rose-100 hover:bg-rose-100 transition">
+                            <div class="font-semibold text-slate-900">3. Interest Rate Sensitivity</div>
+                            <p class="text-sm text-slate-600 mt-1">A significant drop in interest rates can negatively impact the profitability of guaranteed return products.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. STRATEGY & OUTLOOK (THESIS) -->
+        <section id="section-thesis" class="hidden space-y-8">
+            <!-- Timeline -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+                <h2 class="text-xl font-bold text-slate-900 mb-6">Strategic Timeline</h2>
+                <div class="relative">
+                    <div class="absolute left-0 top-1/2 w-full h-1 bg-slate-200 -translate-y-1/2"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                        <!-- Short Term -->
+                        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm z-10 hover:border-teal-400 transition cursor-pointer text-center group">
+                            <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2 font-bold group-hover:bg-teal-100 group-hover:text-teal-700">1</div>
+                            <h3 class="font-bold text-slate-900">Short Term (1-2Y)</h3>
+                            <p class="text-xs text-slate-500 mt-1">Volume adjustment due to tax changes on high-ticket policies. Margins stabilize.</p>
+                        </div>
+                        <!-- Mid Term -->
+                        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm z-10 hover:border-teal-400 transition cursor-pointer text-center group">
+                            <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2 font-bold group-hover:bg-teal-100 group-hover:text-teal-700">2</div>
+                            <h3 class="font-bold text-slate-900">Mid Term (3-5Y)</h3>
+                            <p class="text-xs text-slate-500 mt-1">Tier 2/3 expansion via Bancassurance & Digital. Composite license norms may allow cross-selling.</p>
+                        </div>
+                        <!-- Long Term -->
+                        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm z-10 hover:border-teal-400 transition cursor-pointer text-center group">
+                            <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2 font-bold group-hover:bg-teal-100 group-hover:text-teal-700">3</div>
+                            <h3 class="font-bold text-slate-900">Long Term (5Y+)</h3>
+                            <p class="text-xs text-slate-500 mt-1">Aging demographic drives Pension/Annuity boom. Massive value unlocking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investment Picks -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-800 text-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-4">🏆 Quality Leader</h3>
+                    <div class="text-3xl font-bold text-teal-400 mb-2">HDFC Life</div>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li>• Highest VNB Margins in industry.</li>
+                        <li>• Product Innovation leader (Sanchay Plus).</li>
+                        <li>• Balanced distribution (HDFC Bank + Direct).</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700 text-xs text-slate-400">Recommendation: Core Portfolio Holding</div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">📈 Volume Leader</h3>
+                    <div class="text-3xl font-bold text-blue-700 mb-2">SBI Life</div>
+                    <ul class="space-y-2 text-slate-600 text-sm">
+                        <li>• Lowest Cost Ratios (Opex).</li>
+                        <li>• Massive distribution access via SBI branches.</li>
+                        <li>• Strong protection growth.</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500">Recommendation: Defensive Growth</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">Comprehensive Investment Analysis of the Indian Insurance Sector</p>
+            <p class="text-xs mt-2 opacity-60">Source: IRDAI Annual Reports, Investor Presentations, simulated market data.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Tab Switching Logic ---
+        function switchTab(tabId) {
+            // Hide all sections
+            const sections = ['landscape', 'moat', 'financials', 'drivers', 'thesis'];
+            sections.forEach(id => {
+                document.getElementById('section-' + id).classList.add('hidden');
+                
+                // Desktop Button styles
+                const btn = document.getElementById('tab-' + id);
+                if(btn) {
+                    btn.classList.remove('active', 'text-teal-700');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+
+            // Show selected section
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            
+            // Activate Desktop Button
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.add('active', 'text-teal-700');
+                activeBtn.classList.remove('text-slate-500');
+            }
+
+            // Sync Mobile Dropdown
+            document.getElementById('tabs').value = tabId;
+
+            // Trigger chart updates if needed (for resize mainly)
+            if(tabId === 'financials') {
+               // Resize event often needed for charts in hidden divs
+               if(financialChart) financialChart.resize();
+            }
+        }
+
+        // --- Chart.js Data & Config ---
+        
+        // 1. Landscape Charts
+        const lifeCtx = document.getElementById('lifeShareChart').getContext('2d');
+        const generalCtx = document.getElementById('generalShareChart').getContext('2d');
+
+        new Chart(lifeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['LIC (Public)', 'SBI Life', 'HDFC Life', 'ICICI Pru', 'Others'],
+                datasets: [{
+                    data: [58, 10, 9, 6, 17], // Simulated Market Share NBP
+                    backgroundColor: ['#f59e0b', '#1d4ed8', '#be185d', '#0f766e', '#cbd5e1'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
+            }
+        });
+
+        new Chart(generalCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['PSU Insurers', 'ICICI Lombard', 'Star Health', 'Bajaj Allianz', 'Others'],
+                datasets: [{
+                    data: [32, 11, 8, 7, 42], 
+                    backgroundColor: ['#64748b', '#1d4ed8', '#10b981', '#f59e0b', '#cbd5e1'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
+            }
+        });
+
+        // 2. Moat Interactive Details
+        const moatData = {
+            'distribution': {
+                title: 'Bancassurance Powerhouses',
+                desc: 'Banks act as the primary funnel. <br><strong>SBI Life</strong> leverages 22,000+ SBI branches for unmatched rural reach.<br><strong>HDFC Life</strong> uses HDFC Bank for high-net-worth individuals, driving higher ticket sizes.'
+            },
+            'product': {
+                title: 'Product Mix Optimization',
+                desc: '<strong>HDFC Life</strong> has pioneered "Sanchay Plus" (Non-Par), creating a high-margin guaranteed book.<br><strong>ICICI Pru</strong> pivoted from ULIPs to Protection, reducing volatility.'
+            },
+            'brand': {
+                title: 'Trust & Persistency',
+                desc: 'Trust is currency. <br><strong>HDFC Life & SBI Life</strong> consistently maintain 13th-month persistency >85%, indicating customers renew policies and dont lapse.'
+            }
+        };
+
+        function updateMoatDetail(key) {
+            const box = document.getElementById('moat-detail-box');
+            const title = document.getElementById('moat-title');
+            const desc = document.getElementById('moat-desc');
+            
+            title.innerHTML = moatData[key].title;
+            desc.innerHTML = moatData[key].desc;
+            
+            // Visual feedback
+            box.classList.add('bg-teal-50', 'border-teal-200');
+            setTimeout(() => box.classList.remove('bg-teal-50', 'border-teal-200'), 300);
+        }
+
+        // 3. Financial Charts Toggle
+        const finCtx = document.getElementById('financialChart').getContext('2d');
+        let financialChart;
+
+        const vnbData = {
+            labels: ['HDFC Life', 'SBI Life', 'ICICI Pru', 'Max Life'],
+            datasets: [{
+                label: 'VNB Margin (%)',
+                data: [27.5, 29.8, 31.0, 26.3], // Latest estimates
+                backgroundColor: '#0f766e',
+                borderRadius: 4
+            }]
+        };
+
+        const solvencyData = {
+            labels: ['HDFC Life', 'SBI Life', 'ICICI Lombard', 'Star Health', 'Mandatory'],
+            datasets: [{
+                label: 'Solvency Ratio (x)',
+                data: [1.9, 2.1, 2.5, 2.2, 1.5],
+                backgroundColor: ['#1d4ed8', '#1d4ed8', '#1d4ed8', '#1d4ed8', '#ef4444'], // Red for mandate
+                borderRadius: 4
+            }]
+        };
+
+        function renderFinChart(type) {
+            if(financialChart) financialChart.destroy();
+            
+            const config = type === 'vnb' ? {
+                type: 'bar',
+                data: vnbData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        title: { display: true, text: 'Value of New Business Margins (FY24 Estimates)' }
+                    },
+                    scales: { y: { beginAtZero: true, max: 40 } }
+                }
+            } : {
+                type: 'bar',
+                data: solvencyData,
+                options: {
+                    indexAxis: 'y', // Horizontal bar
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        title: { display: true, text: 'Solvency Ratios (Regulatory Minimum: 1.5x)' }
+                    },
+                    scales: { x: { beginAtZero: true, max: 3 } }
+                }
+            };
+
+            financialChart = new Chart(finCtx, config);
+
+            // Update Text Explainer
+            const explainer = document.getElementById('metric-explainer');
+            if(type === 'vnb') {
+                explainer.innerHTML = `<h4 class="text-sm font-semibold text-teal-700">Value of New Business (VNB)</h4><p class="text-sm text-slate-600 mt-1">High VNB margins indicate a superior product mix (more Protection/Term plans, less low-margin savings). <strong>ICICI Pru & SBI Life</strong> lead here.</p>`;
+                document.getElementById('btn-vnb').className = "px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-slate-900 transition";
+                document.getElementById('btn-solvency').className = "px-4 py-2 text-sm font-medium rounded-md text-slate-500 hover:text-slate-900 transition";
+            } else {
+                explainer.innerHTML = `<h4 class="text-sm font-semibold text-teal-700">Solvency Ratio</h4><p class="text-sm text-slate-600 mt-1">The capital buffer insurers hold against claims. All top players are comfortably above the IRDAI mandate of 1.5x, showing strong balance sheets.</p>`;
+                document.getElementById('btn-solvency').className = "px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-slate-900 transition";
+                document.getElementById('btn-vnb').className = "px-4 py-2 text-sm font-medium rounded-md text-slate-500 hover:text-slate-900 transition";
+            }
+        }
+
+        // Initialize Defaults
+        renderFinChart('vnb');
+        
+    </script>
+</body>
+</html>

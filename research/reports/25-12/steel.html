@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Steel Sector Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* STRICT CHART CONTAINER STYLING */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .tab-btn.active {
+            border-bottom: 2px solid #ef4444; /* Red-500 */
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #fca5a5; /* Red-300 */
+        }
+        
+        .section-header {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 40px;
+            height: 3px;
+            background-color: #ef4444;
+        }
+    </style>
+
+    <!-- Chosen Palette: "Industrial Strength"
+         Background: Slate-50 (Neutral/Industrial)
+         Primary Text: Slate-900
+         Primary Brand: Red-600 (Heat/Steel/Energy)
+         Secondary Accents: Slate-500 (Metal), Amber-500 (Warning/Heat)
+    -->
+
+    <!-- Application Structure Plan:
+         1. Hero Section: Executive Summary & Cycle Position (Mid-Cycle).
+         2. Market Landscape: Capacity breakdown of "Big 4" and Primary vs Secondary mix.
+         3. The Moat (Raw Material Security): Critical analysis of Iron Ore/Coal integration.
+         4. Financial Forge: Dashboard tracking EBITDA/tonne and Deleveraging.
+         5. Global Forces (Tailwinds/Headwinds): "China Factor" vs Infra Push.
+         6. Timeline & Green Steel: Future outlook including Decarbonization.
+         7. Investment Matrix: Valuation vs Cycle position.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Landscape: Doughnut Chart (Primary/Secondary) & Bar Chart (Capacity Plans).
+         2. Moat: Stacked Bar Chart (Captive Integration %). Goal: Show cost resilience.
+         3. Financials: Line Chart (EBITDA/t Trends). Goal: Show volatility.
+         4. Outlook: Interactive Timeline. Goal: Temporal strategy.
+         5. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🏗️</span>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight text-slate-900">Steel<span class="text-red-600">Core</span> India</span>
+                        <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Equity Research</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                    <span class="mr-1">←</span> Research - Back
+                    </a>
+                    <button onclick="scrollToSection('landscape')" class="text-sm font-medium text-slate-500 hover:text-red-600 transition">Landscape</button>
+                    <button onclick="scrollToSection('moat')" class="text-sm font-medium text-slate-500 hover:text-red-600 transition">The Moat</button>
+                    <button onclick="scrollToSection('financials')" class="text-sm font-medium text-slate-500 hover:text-red-600 transition">Financials</button>
+                    <button onclick="scrollToSection('thesis')" class="text-sm font-medium text-slate-500 hover:text-red-600 transition">Thesis</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700 mb-4 ring-1 ring-inset ring-red-600/20">Cycle Status: Mid-Cycle Consolidation</span>
+                <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-6">Forging the Future: Indian Steel Sector</h1>
+                <p class="text-lg leading-8 text-slate-600 mb-8">
+                    Navigating the commodity super-cycle. A deep dive into the "Big 4" steelmakers, the critical <strong>Raw Material Moat</strong>, and the tug-of-war between domestic infra demand and the "China Factor."
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left text-sm">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-red-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Domestic Demand</div>
+                        <div class="text-slate-600">Robust (10-12% growth) driven by Govt Infra.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-red-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Global Prices</div>
+                        <div class="text-slate-600">Volatile due to weak Chinese real estate.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-red-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Valuation</div>
+                        <div class="text-slate-600">Trading near historic median EV/EBITDA.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- SECTION 1: INDUSTRY LANDSCAPE -->
+        <section id="landscape" class="scroll-mt-20">
+            <h2 class="text-2xl font-bold text-slate-900 section-header">1. Structure & Competitive Landscape</h2>
+            <p class="text-slate-600 mb-8 max-w-4xl">
+                The Indian steel industry is targeting 300 MTPA capacity by 2030. The market is consolidating around the "Big 4" integrated players who control the primary steel route, while secondary players (using scrap/sponge iron) cater to regional long-product demand.
+            </p>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <button onclick="updateLandscape('capacity')" id="btn-capacity" class="tab-btn active px-4 py-2 text-sm font-medium">Capacity Expansion (Big 4)</button>
+                    <button onclick="updateLandscape('split')" id="btn-split" class="tab-btn px-4 py-2 text-sm text-slate-500 hover:text-slate-700">Primary vs Secondary</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div id="landscape-text">
+                        <h3 class="text-lg font-bold text-slate-900 mb-3" id="land-title">The Expansion Race</h3>
+                        <p class="text-sm text-slate-600 mb-4" id="land-desc">
+                            JSW Steel and Tata Steel are leading the capex cycle. Expansion is largely brownfield (expanding existing plants), which is capital efficient.
+                        </p>
+                        <ul class="space-y-3 text-sm text-slate-700" id="land-list">
+                            <li class="flex items-center"><span class="w-2 h-2 bg-red-600 rounded-full mr-2"></span><strong>JSW Steel:</strong> Aggressive expansion to 37 MTPA.</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-slate-700 rounded-full mr-2"></span><strong>Tata Steel:</strong> Focusing on Kalinganagar expansion.</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span><strong>JSPL:</strong> Doubling Angul capacity.</li>
+                        </ul>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="landscapeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE MOAT (RAW MATERIAL SECURITY) -->
+        <section id="moat" class="scroll-mt-20">
+            <h2 class="text-2xl font-bold text-slate-900 section-header">2. The "Moat": Backward Integration</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Chart Area -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 class="font-bold text-slate-900 mb-4">Captive Raw Material Sourcing (%)</h3>
+                    <div class="chart-container">
+                        <canvas id="moatChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-500 text-center">
+                        *Higher integration = Lower cost volatility. Tata & SAIL lead in Iron Ore.
+                    </div>
+                </div>
+
+                <!-- Analysis Cards -->
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 card-hover cursor-pointer" onclick="toggleDetails('iron-ore')">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-bold text-slate-900">🪨 Iron Ore Security</h4>
+                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">High Moat</span>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            <strong>Tata Steel & SAIL</strong> are 100% integrated. They are immune to iron ore price spikes, giving them the lowest conversion costs in the industry.
+                        </p>
+                        <div id="iron-ore-detail" class="hidden mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500">
+                            JSW Steel is catching up (~45% captive) via Odisha mine auctions but still buys from the open market.
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 card-hover cursor-pointer" onclick="toggleDetails('coking-coal')">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-bold text-slate-900">⚫ Coking Coal Dependency</h4>
+                            <span class="text-xs font-bold bg-red-100 text-red-700 px-2 py-1 rounded">Industry Weakness</span>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            India imports ~85% of coking coal (Australia). Volatility here impacts everyone, but <strong>JSPL</strong> has an edge with captive thermal coal for DRI.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 card-hover cursor-pointer" onclick="toggleDetails('vap')">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-bold text-slate-900">✨ Value Added Products (VAP)</h4>
+                            <span class="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded">Margin Defense</span>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            <strong>JSW Steel</strong> leads with >50% VAP mix (Cold Rolled, Galvanized). These command a premium over commodity Hot Rolled Coils (HRC).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FINANCIAL KPIs -->
+        <section id="financials" class="scroll-mt-20">
+            <h2 class="text-2xl font-bold text-slate-900 section-header">3. Financial Health: The Analyst's Lens</h2>
+            <div class="bg-slate-900 rounded-2xl p-6 md:p-10 text-white shadow-xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Profitability & Leverage</h3>
+                        <p class="text-slate-400 mt-2 text-sm max-w-xl">
+                            Monitoring <strong>EBITDA/Tonne</strong> (Profitability) and <strong>Net Debt/EBITDA</strong> (Balance Sheet Strength).
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex bg-slate-800 rounded-lg p-1">
+                        <button onclick="updateFinChart('ebitda')" id="btn-ebitda" class="px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white shadow transition">EBITDA/Tonne</button>
+                        <button onclick="updateFinChart('debt')" id="btn-debt" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Net Debt/EBITDA</button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="financialChart"></canvas>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Lowest Cost Producer</div>
+                        <div class="text-xl font-bold text-white mt-1">Tata Steel (India)</div>
+                        <div class="text-green-400 text-sm mt-1">Due to 100% captive ore</div>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Deleveraging Champ</div>
+                        <div class="text-xl font-bold text-white mt-1">JSPL</div>
+                        <div class="text-green-400 text-sm mt-1">Net Debt/EBITDA < 1.0x</div>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Highest VAP Mix</div>
+                        <div class="text-xl font-bold text-white mt-1">JSW Steel</div>
+                        <div class="text-blue-400 text-sm mt-1">>50% Portfolio</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: GLOBAL FORCES & RISKS -->
+        <section id="forces" class="scroll-mt-20">
+            <h2 class="text-2xl font-bold text-slate-900 section-header">4. Tailwinds & Headwinds</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tailwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-green-500">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">🚀 Growth Drivers</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="text-green-500 font-bold">1.</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Infrastructure Capex</h4>
+                                <p class="text-xs text-slate-600 mt-1">Record Govt spend on Railways and Defense drives demand for Long Products (Bars/Rods). JSPL & SAIL key beneficiaries.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-green-500 font-bold">2.</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Domestic Consumption</h4>
+                                <p class="text-xs text-slate-600 mt-1">Per capita consumption expected to rise from 86kg to 160kg by 2030, narrowing the gap with global average (220kg).</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Headwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-red-500">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">⚠️ Critical Risks</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="text-red-500 font-bold">1.</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">The "China Factor"</h4>
+                                <p class="text-xs text-slate-600 mt-1">Weak Chinese real estate demand leads to dumping of cheap steel in global markets, suppressing prices/realizations in India.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-red-500 font-bold">2.</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">CBAM & Green Steel</h4>
+                                <p class="text-xs text-slate-600 mt-1">EU's Carbon Tax (CBAM) poses a threat to exports. Indian players must accelerate investments in Green Hydrogen/DRI to remain competitive.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: OUTLOOK & THESIS -->
+        <section id="thesis" class="scroll-mt-20">
+            <h2 class="text-2xl font-bold text-slate-900 section-header">5. Investment Thesis & Outlook</h2>
+            
+            <!-- Timeline -->
+            <div class="mb-10 overflow-x-auto pb-4">
+                <div class="flex min-w-[600px] gap-4">
+                    <div class="flex-1 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-bold text-red-600 uppercase">Short Term (1-2 Years)</span>
+                        <h4 class="font-bold text-slate-900 mt-2">Margin Compression</h4>
+                        <p class="text-sm text-slate-600 mt-1">Global slowdown weighs on prices. Focus on players with captive raw material to defend margins.</p>
+                    </div>
+                    <div class="flex-1 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Mid Term (3-5 Years)</span>
+                        <h4 class="font-bold text-slate-900 mt-2">Capacity Injection</h4>
+                        <p class="text-sm text-slate-600 mt-1">Brownfield expansions come online. Volume growth compensates for lower prices.</p>
+                    </div>
+                    <div class="flex-1 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-bold text-green-600 uppercase">Long Term (5+ Years)</span>
+                        <h4 class="font-bold text-slate-900 mt-2">Decarbonization</h4>
+                        <p class="text-sm text-slate-600 mt-1">Shift to EAF (Electric Arc Furnace) and scrap-based steel making. Green premiums emerge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Picks Matrix -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-100 text-xs uppercase font-bold text-slate-500">
+                        <tr>
+                            <th class="px-6 py-4">Strategy</th>
+                            <th class="px-6 py-4">Top Pick</th>
+                            <th class="px-6 py-4">Rationale</th>
+                            <th class="px-6 py-4">Valuation (EV/EBITDA)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 font-bold text-slate-900">Cost Leader</td>
+                            <td class="px-6 py-4 text-red-700 font-bold">Tata Steel</td>
+                            <td class="px-6 py-4">100% Iron ore integration shields against inflation. Kalinganagar expansion adds volume.</td>
+                            <td class="px-6 py-4">~6.5x</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 font-bold text-slate-900">Growth Aggressor</td>
+                            <td class="px-6 py-4 text-blue-700 font-bold">JSPL</td>
+                            <td class="px-6 py-4">Clean balance sheet (Deleveraged). Capacity doubling to 12.6 MTPA.</td>
+                            <td class="px-6 py-4">~5.8x</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 font-bold text-slate-900">Defensive VAP</td>
+                            <td class="px-6 py-4 text-slate-700 font-bold">JSW Steel</td>
+                            <td class="px-6 py-4">High share of Value Added Products ensures better realizations. Efficient execution.</td>
+                            <td class="px-6 py-4">~7.2x</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-10 mt-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm font-medium text-slate-300">Indian Steel Sector Investment Analysis</p>
+            <p class="text-xs mt-2 opacity-60">Source: World Steel Association, Company Annual Reports, Analyst Estimates. Simulated Data.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Navigation Logic ---
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleDetails(id) {
+            const el = document.getElementById(id + '-detail');
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // --- 2. Chart Configurations ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // A. Market Landscape Chart (Dynamic: Capacity vs Split)
+        const ctxLand = document.getElementById('landscapeChart').getContext('2d');
+        let landChart;
+
+        const landData = {
+            capacity: {
+                type: 'bar',
+                labels: ['Tata Steel', 'JSW Steel', 'SAIL', 'JSPL'],
+                datasets: [{
+                    label: 'Capacity (MTPA) - 2024 vs 2030 (Planned)',
+                    data: [21, 28, 20, 9], // Current
+                    backgroundColor: '#ef4444',
+                    borderRadius: 4
+                }, {
+                    label: '2030 Expansion',
+                    data: [40, 37, 35, 25], // Future Target
+                    backgroundColor: '#cbd5e1',
+                    borderRadius: 4
+                }],
+                title: 'The Expansion Race (Big 4)',
+                desc: 'JSW and Tata are leading aggressive brownfield expansions to meet the 300 MTPA national target.'
+            },
+            split: {
+                type: 'doughnut',
+                labels: ['Integrated (Primary)', 'Secondary (EAF/IF)'],
+                datasets: [{
+                    data: [45, 55],
+                    backgroundColor: ['#ef4444', '#cbd5e1'],
+                    borderWidth: 0
+                }],
+                title: 'Production Route Split',
+                desc: 'Unlike global markets, India has a massive Secondary steel sector (55%) catering to local construction demand via scrap/DRI.'
+            }
+        };
+
+        function initLandChart() {
+            landChart = new Chart(ctxLand, {
+                type: 'bar',
+                data: landData.capacity,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        function updateLandscape(view) {
+            const btnCap = document.getElementById('btn-capacity');
+            const btnSplit = document.getElementById('btn-split');
+            const title = document.getElementById('land-title');
+            const desc = document.getElementById('land-desc');
+            const list = document.getElementById('land-list');
+
+            if (view === 'capacity') {
+                btnCap.classList.add('active'); btnSplit.classList.remove('active');
+                landChart.destroy();
+                landChart = new Chart(ctxLand, {
+                    type: 'bar',
+                    data: landData.capacity,
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                title.innerText = landData.capacity.title;
+                desc.innerText = landData.capacity.desc;
+                list.style.display = 'block';
+            } else {
+                btnSplit.classList.add('active'); btnCap.classList.remove('active');
+                landChart.destroy();
+                landChart = new Chart(ctxLand, {
+                    type: 'doughnut',
+                    data: landData.split,
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                title.innerText = landData.split.title;
+                desc.innerText = landData.split.desc;
+                list.style.display = 'none';
+            }
+        }
+
+        // B. Moat Chart (Stacked Bar - Raw Material)
+        const ctxMoat = document.getElementById('moatChart').getContext('2d');
+        new Chart(ctxMoat, {
+            type: 'bar',
+            data: {
+                labels: ['Tata Steel', 'SAIL', 'JSW Steel', 'JSPL'],
+                datasets: [
+                    {
+                        label: 'Captive Iron Ore (%)',
+                        data: [100, 100, 45, 30],
+                        backgroundColor: '#15803d', // Green
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: 'Open Market Purchase (%)',
+                        data: [0, 0, 55, 70],
+                        backgroundColor: '#cbd5e1', // Slate
+                        stack: 'Stack 0',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { display: false }
+                }
+            }
+        });
+
+        // C. Financial Chart (Dynamic Line/Bar)
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+        let finChart;
+
+        const finData = {
+            ebitda: {
+                labels: ['Q1FY23', 'Q2FY23', 'Q3FY23', 'Q4FY23', 'Q1FY24', 'Q2FY24'],
+                datasets: [
+                    { label: 'Tata Steel', data: [14000, 9000, 11000, 13500, 12000, 11500], borderColor: '#ef4444', tension: 0.3 },
+                    { label: 'JSW Steel', data: [11000, 8500, 10500, 12000, 11000, 11200], borderColor: '#3b82f6', tension: 0.3 }
+                ],
+                labelY: 'EBITDA/Tonne (₹)'
+            },
+            debt: {
+                labels: ['FY21', 'FY22', 'FY23', 'FY24(E)'],
+                datasets: [
+                    { label: 'JSPL Net Debt/EBITDA', data: [2.5, 1.2, 0.9, 0.8], backgroundColor: '#22c55e' },
+                    { label: 'Tata Steel Net Debt/EBITDA', data: [3.1, 1.8, 1.6, 2.1], backgroundColor: '#ef4444' } // 2.1 due to Europe volatility
+                ],
+                labelY: 'Ratio (x)'
+            }
+        };
+
+        function initFinChart() {
+            finChart = new Chart(ctxFin, {
+                type: 'line',
+                data: {
+                    labels: finData.ebitda.labels,
+                    datasets: finData.ebitda.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { title: { display: true, text: 'EBITDA/Tonne (₹)', color: '#94a3b8' }, grid: { color: '#334155' }, ticks: { color: '#cbd5e1' } },
+                        x: { grid: { display: false }, ticks: { color: '#cbd5e1' } }
+                    },
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } }
+                }
+            });
+        }
+
+        function updateFinChart(metric) {
+            const btnEbitda = document.getElementById('btn-ebitda');
+            const btnDebt = document.getElementById('btn-debt');
+
+            if (metric === 'ebitda') {
+                btnEbitda.className = "px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white shadow transition";
+                btnDebt.className = "px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition";
+                
+                finChart.destroy();
+                finChart = new Chart(ctxFin, {
+                    type: 'line',
+                    data: { labels: finData.ebitda.labels, datasets: finData.ebitda.datasets },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { y: { title: { display: true, text: 'EBITDA/Tonne (₹)', color: '#94a3b8' }, grid: { color: '#334155' }, ticks: { color: '#cbd5e1' } }, x: { grid: { display: false }, ticks: { color: '#cbd5e1' } } },
+                        plugins: { legend: { labels: { color: '#cbd5e1' } } }
+                    }
+                });
+            } else {
+                btnDebt.className = "px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white shadow transition";
+                btnEbitda.className = "px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition";
+
+                finChart.destroy();
+                finChart = new Chart(ctxFin, {
+                    type: 'bar',
+                    data: { labels: finData.debt.labels, datasets: finData.debt.datasets },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { y: { title: { display: true, text: 'Ratio (x)', color: '#94a3b8' }, grid: { color: '#334155' }, ticks: { color: '#cbd5e1' } }, x: { grid: { display: false }, ticks: { color: '#cbd5e1' } } },
+                        plugins: { legend: { labels: { color: '#cbd5e1' } } }
+                    }
+                });
+            }
+        }
+
+        // Initialize All Charts
+        initLandChart();
+        initFinChart();
+
+    </script>
+</body>
+</html>

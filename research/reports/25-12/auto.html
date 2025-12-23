@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Automotive Sector: Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Chart Container Styling Rules - STRICTLY ENFORCED */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+
+        .active-tab {
+            border-bottom: 2px solid #ea580c; /* Orange-600 */
+            color: #ea580c;
+            font-weight: 600;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-mt-24 {
+            scroll-margin-top: 6rem;
+        }
+    </style>
+    <!-- Chosen Palette: "High Octane & Sustainability" 
+         Background: Slate-50 (Neutral Base)
+         Primary Text: Slate-900
+         Primary Brand: Orange-600 (Energy/Movement/Auto)
+         Secondary Accents: Green-600 (EV/Sustainability), Blue-700 (Reliability/CVs)
+    -->
+
+    <!-- Application Structure Plan:
+         1. Hero Section: Executive Summary & Core Thesis (Premiumization + EV Transition).
+         2. Market Dashboard: Tabbed view for PV, 2W, CV segments. Showing market share and "Battlegrounds".
+         3. The Moat Analysis: Interactive cards diving into Brand Power (SUV), Rural Reach, and Export hedging.
+         4. Financial Engine: Analyst Dashboard switching between Margins, ASP Trends, and Capex.
+         5. Growth & Risks: Side-by-side interactive lists for Tailwinds (Premiumization) and Headwinds (Input Costs).
+         6. Strategic Timeline: Interactive roadmap for Short, Mid, and Long term outlooks.
+         7. Investment Matrix: Final summary of Top Picks based on the thesis.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Market Share: Doughnut Charts. Goal: Show dominance vs fragmentation.
+         2. Financials: Mixed Charts (Bar + Line). Goal: Show ASP rise vs Volume.
+         3. Moat: Grid Layout with click-to-reveal details. Goal: Qualitative deep dive.
+         4. Timeline: Horizontal scrollable/clickable timeline. Goal: Temporal strategy.
+         5. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🚗</span>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight text-slate-900">Auto<span class="text-orange-600">Invest</span> India</span>
+                        <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Equity Research</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                    <span class="mr-1">←</span> Research - Back
+                    </a>
+                    <button onclick="scrollToSection('market')" class="text-sm font-medium text-slate-500 hover:text-orange-600 transition">Market Structure</button>
+                    <button onclick="scrollToSection('moat')" class="text-sm font-medium text-slate-500 hover:text-orange-600 transition">Moats</button>
+                    <button onclick="scrollToSection('financials')" class="text-sm font-medium text-slate-500 hover:text-orange-600 transition">Financials</button>
+                    <button onclick="scrollToSection('outlook')" class="text-sm font-medium text-slate-500 hover:text-orange-600 transition">Outlook</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700 mb-4 ring-1 ring-inset ring-orange-600/20">Sector Rating: Accumulate</span>
+                <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-6">India's Automotive Revolution</h1>
+                <p class="text-lg leading-8 text-slate-600 mb-8">
+                    Navigating the shift from <strong>Cost to Quality</strong>. 
+                    The Indian auto sector is undergoing a structural re-rating driven by <span class="text-slate-900 font-semibold">Premiumization</span> (SUVs > Hatchbacks) and the gradual <span class="text-green-700 font-semibold">EV Transition</span>.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-900">Structural Growth</div>
+                        <div class="text-slate-500">SUVs & Premium 2W</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-900">Cyclical Play</div>
+                        <div class="text-slate-500">Commercial Vehicles</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-900">Key Theme</div>
+                        <div class="text-slate-500">Rural Recovery</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- SECTION 1: MARKET STRUCTURE -->
+        <section id="market" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">1. Industry Structure & Battlegrounds</h2>
+                <p class="mt-4 text-slate-600 max-w-4xl">
+                    The market is segmented into three distinct battlegrounds. While <strong>Passenger Vehicles (PV)</strong> are fighting an SUV war, <strong>Two-Wheelers (2W)</strong> are seeing an EV disruption led by startups. <strong>Commercial Vehicles (CV)</strong> remain a play on the infrastructure cycle.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-slate-200 bg-slate-50">
+                    <button onclick="switchMarketTab('pv')" id="tab-pv" class="flex-1 py-4 text-sm font-medium text-center active-tab">Passenger Vehicles (PV)</button>
+                    <button onclick="switchMarketTab('2w')" id="tab-2w" class="flex-1 py-4 text-sm font-medium text-center text-slate-500 hover:text-slate-700">Two-Wheelers (2W)</button>
+                    <button onclick="switchMarketTab('cv')" id="tab-cv" class="flex-1 py-4 text-sm font-medium text-center text-slate-500 hover:text-slate-700">Commercial Vehicles</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="p-6 md:p-8">
+                    <!-- PV Content -->
+                    <div id="content-pv" class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center animate-fade-in">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">The SUV Shift</h3>
+                            <p class="text-sm text-slate-600 mb-4">
+                                Maruti Suzuki's dominance is challenged as consumer preference shifts to SUVs. Tata Motors and Mahindra have gained significant share via new launches and safety ratings.
+                            </p>
+                            <ul class="space-y-2 text-sm text-slate-700 mb-6">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span><strong>Leader:</strong> Maruti Suzuki (But losing hatchback share)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span><strong>Challenger:</strong> Tata Motors (EV First Mover)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span><strong>Growth:</strong> Mahindra (Pure SUV Play)</li>
+                            </ul>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartPV"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 2W Content (Hidden Default) -->
+                    <div id="content-2w" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8 items-center animate-fade-in">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">EV Disruption & Premiumization</h3>
+                            <p class="text-sm text-slate-600 mb-4">
+                                The entry-level segment is weak due to rural distress, but premium bikes (>250cc) are booming (Royal Enfield). In EVs, Ola Electric has disrupted the scooter segment, forcing legacy players like TVS and Bajaj to pivot fast.
+                            </p>
+                            <ul class="space-y-2 text-sm text-slate-700 mb-6">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span><strong>Volume King:</strong> Hero MotoCorp (Rural dependence)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span><strong>Profit King:</strong> Eicher Motors (Royal Enfield)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span><strong>EV Leader:</strong> Ola Electric (Market Share ~35%)</li>
+                            </ul>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chart2W"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- CV Content (Hidden Default) -->
+                    <div id="content-cv" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8 items-center animate-fade-in">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">Cyclical Infra Play</h3>
+                            <p class="text-sm text-slate-600 mb-4">
+                                Closely tied to the GDP and Government Capex on roads. Currently in an upcycle. The market is a duopoly between Tata Motors and Ashok Leyland.
+                            </p>
+                            <ul class="space-y-2 text-sm text-slate-700 mb-6">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span><strong>Leader:</strong> Tata Motors (~50% Share)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span><strong>Challenger:</strong> Ashok Leyland (~32% Share)</li>
+                            </ul>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartCV"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MOAT ANALYSIS -->
+        <section id="moat" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">2. The "Moat" Analysis</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="card-hover bg-white p-6 rounded-xl border border-slate-200 cursor-pointer group" onclick="toggleMoatDetail('brand')">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:bg-orange-200 transition">🦁</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Brand Power (SUVs)</h3>
+                    <p class="text-sm text-slate-600">The ability to command waiting periods of 6-12 months.</p>
+                    <div id="moat-brand" class="hidden mt-4 pt-4 border-t border-slate-100 text-sm text-slate-700">
+                        <strong>Winner: Mahindra & Mahindra.</strong><br>
+                        With models like Scorpio-N and XUV700, M&M has created a "pull" brand where customers wait for months, negating the need for discounts.
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card-hover bg-white p-6 rounded-xl border border-slate-200 cursor-pointer group" onclick="toggleMoatDetail('rural')">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:bg-green-200 transition">🌾</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Rural Distribution</h3>
+                    <p class="text-sm text-slate-600">Reach into Tier-3/4 towns where digital penetration is lower.</p>
+                    <div id="moat-rural" class="hidden mt-4 pt-4 border-t border-slate-100 text-sm text-slate-700">
+                        <strong>Winner: Hero MotoCorp.</strong><br>
+                        Unmatched dealership network in rural India makes it the default choice for the "Splendor" commuter segment.
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card-hover bg-white p-6 rounded-xl border border-slate-200 cursor-pointer group" onclick="toggleMoatDetail('export')">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-200 transition">🚢</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Export Capabilities</h3>
+                    <p class="text-sm text-slate-600">Hedging domestic cyclicality with global revenue.</p>
+                    <div id="moat-export" class="hidden mt-4 pt-4 border-t border-slate-100 text-sm text-slate-700">
+                        <strong>Winner: Bajaj Auto.</strong><br>
+                        Exports ~50% of its production to Africa/LatAm. This protects margins when domestic demand slows.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FINANCIAL KPIs -->
+        <section id="financials" class="scroll-mt-24">
+            <div class="bg-slate-900 rounded-2xl p-6 md:p-10 text-white shadow-xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">3. Financial Health & KPIs</h2>
+                        <p class="text-slate-400 mt-2 text-sm max-w-xl">
+                            Monitoring the "Premiumization" effect via ASP trends and the capability to fund the EV transition.
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex bg-slate-800 rounded-lg p-1">
+                        <button onclick="updateFinancialChart('asp')" id="btn-asp" class="px-4 py-2 text-sm font-medium rounded-md bg-orange-600 text-white shadow-sm transition">ASP Trend</button>
+                        <button onclick="updateFinancialChart('margins')" id="btn-margins" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">EBITDA %</button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="financialChart"></canvas>
+                </div>
+
+                <div class="mt-6 text-center text-xs text-slate-500">
+                    <span id="chart-context">Rising Average Selling Price (ASP) indicates successful premiumization despite flat volumes.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DRIVERS & RISKS -->
+        <section id="drivers" class="scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Tailwinds -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span class="text-green-600 mr-2">▲</span> Growth Drivers (Tailwinds)
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="p-3 bg-green-50 rounded-lg border border-green-100">
+                            <strong class="text-slate-900 block text-sm">Premiumization Theme</strong>
+                            <span class="text-xs text-slate-600">Shift from entry-level to high-end. Profit pools moving to SUVs and >250cc bikes.</span>
+                        </li>
+                        <li class="p-3 bg-green-50 rounded-lg border border-green-100">
+                            <strong class="text-slate-900 block text-sm">Infrastructure Push</strong>
+                            <span class="text-xs text-slate-600">Govt Capex on roads directly boosts Commercial Vehicle demand (Tipper/Trucks).</span>
+                        </li>
+                        <li class="p-3 bg-green-50 rounded-lg border border-green-100">
+                            <strong class="text-slate-900 block text-sm">Scrappage Policy</strong>
+                            <span class="text-xs text-slate-600">Mandatory phasing out of old government vehicles creates replacement demand.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Headwinds -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span class="text-red-600 mr-2">▼</span> Risks (Headwinds)
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="p-3 bg-red-50 rounded-lg border border-red-100">
+                            <strong class="text-slate-900 block text-sm">Input Cost Volatility</strong>
+                            <span class="text-xs text-slate-600">Steel & Lithium prices dictate margins. High sensitivity to commodity cycles.</span>
+                        </li>
+                        <li class="p-3 bg-red-50 rounded-lg border border-red-100">
+                            <strong class="text-slate-900 block text-sm">Rural Distress</strong>
+                            <span class="text-xs text-slate-600">High inflation and erratic monsoons hurting entry-level 2W demand.</span>
+                        </li>
+                        <li class="p-3 bg-red-50 rounded-lg border border-red-100">
+                            <strong class="text-slate-900 block text-sm">Regulatory Flux</strong>
+                            <span class="text-xs text-slate-600">FAME subsidy reductions for EVs creates demand uncertainty.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: OUTLOOK TIMELINE -->
+        <section id="outlook" class="scroll-mt-24 border-t border-slate-200 pt-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8 text-center">Strategic Outlook Timeline</h2>
+            
+            <div class="relative">
+                <!-- Connector Line (Desktop) -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                    <!-- Short Term -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:border-orange-400 transition">
+                        <div class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold mb-3">1</div>
+                        <h3 class="font-bold text-slate-900">Short Term (1-2 Years)</h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            <strong>Inventory Alert:</strong> PV inventory levels are high. Expect higher discounts. 
+                            <br><strong>Focus:</strong> Order book execution for M&M.
+                        </p>
+                    </div>
+
+                    <!-- Mid Term -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:border-orange-400 transition">
+                        <div class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold mb-3">2</div>
+                        <h3 class="font-bold text-slate-900">Mid Term (3-5 Years)</h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            <strong>EV Tipping Point:</strong> EV adoption in PVs to cross 10%. Hybrids (Maruti/Toyota) will bridge the gap.
+                            <br><strong>Focus:</strong> Tata Motors EV profitability.
+                        </p>
+                    </div>
+
+                    <!-- Long Term -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:border-orange-400 transition">
+                        <div class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold mb-3">3</div>
+                        <h3 class="font-bold text-slate-900">Long Term (5+ Years)</h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            <strong>Global Hub:</strong> "China+1" strategy matures. India becomes a key exporter of small cars and auto components.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: INVESTMENT THESIS MATRIX -->
+        <section class="mt-16 bg-slate-900 text-white rounded-xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold mb-6">Investment Thesis & Top Picks</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                        <tr>
+                            <th class="px-6 py-3">Strategy</th>
+                            <th class="px-6 py-3">Top Pick</th>
+                            <th class="px-6 py-3">Rationale</th>
+                            <th class="px-6 py-3">Risk</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">Structural Growth (SUV)</td>
+                            <td class="px-6 py-4 text-orange-400 font-bold">Mahindra & Mahindra</td>
+                            <td class="px-6 py-4">Pure play on SUV premiumization. Strong order book visibility.</td>
+                            <td class="px-6 py-4">Production capacity constraints.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">EV Leadership (PV)</td>
+                            <td class="px-6 py-4 text-green-400 font-bold">Tata Motors</td>
+                            <td class="px-6 py-4">First mover advantage in EVs (80% share). JLR turning free cash flow positive.</td>
+                            <td class="px-6 py-4">Global slowdown impacting JLR.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">Premium 2W</td>
+                            <td class="px-6 py-4 text-purple-400 font-bold">Eicher Motors</td>
+                            <td class="px-6 py-4">Monopoly in 350cc segment. High margins and ROCE.</td>
+                            <td class="px-6 py-4">Increasing competition (Triumph/Harley).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-50 text-slate-400 py-8 border-t border-slate-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">Investment Analysis: Indian Automotive Sector. For educational purposes only.</p>
+            <p class="text-xs mt-2 opacity-60">Source: SIAM Data, Company Annual Reports, Earnings Calls. Simulated Data for Visuals.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Navigation & Scroll Logic ---
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if(element) element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- 2. Market Tab Logic ---
+        function switchMarketTab(tabId) {
+            // Hide all content
+            ['pv', '2w', 'cv'].forEach(id => {
+                document.getElementById('content-' + id).classList.add('hidden');
+                document.getElementById('tab-' + id).classList.remove('active-tab', 'text-slate-900');
+                document.getElementById('tab-' + id).classList.add('text-slate-500');
+            });
+            
+            // Show selected
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('active-tab', 'text-slate-900');
+            document.getElementById('tab-' + tabId).classList.remove('text-slate-500');
+        }
+
+        // --- 3. Moat Detail Logic ---
+        function toggleMoatDetail(id) {
+            const el = document.getElementById('moat-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // --- 4. Chart.js Configurations ---
+        
+        // A. Market Share Charts
+        const commonDoughnutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'right' } }
+        };
+
+        // PV Chart
+        new Chart(document.getElementById('chartPV'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Maruti Suzuki', 'Hyundai', 'Tata Motors', 'Mahindra', 'Others'],
+                datasets: [{
+                    data: [41, 15, 14, 11, 19],
+                    backgroundColor: ['#cbd5e1', '#94a3b8', '#10b981', '#ea580c', '#f1f5f9']
+                }]
+            },
+            options: commonDoughnutOptions
+        });
+
+        // 2W Chart
+        new Chart(document.getElementById('chart2W'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Hero MotoCorp', 'Honda', 'TVS Motor', 'Bajaj Auto', 'Royal Enfield', 'Others'],
+                datasets: [{
+                    data: [32, 25, 17, 12, 4, 10],
+                    backgroundColor: ['#ea580c', '#cbd5e1', '#64748b', '#475569', '#7c3aed', '#f1f5f9']
+                }]
+            },
+            options: commonDoughnutOptions
+        });
+
+        // CV Chart
+        new Chart(document.getElementById('chartCV'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Tata Motors', 'Ashok Leyland', 'VECV', 'Mahindra', 'Others'],
+                datasets: [{
+                    data: [48, 32, 10, 6, 4],
+                    backgroundColor: ['#2563eb', '#eab308', '#64748b', '#ea580c', '#f1f5f9']
+                }]
+            },
+            options: commonDoughnutOptions
+        });
+
+        // B. Financial Chart (Dynamic Switch)
+        let financialChart;
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+
+        const finData = {
+            asp: {
+                type: 'bar',
+                labels: ['FY21', 'FY22', 'FY23', 'FY24'],
+                datasets: [{
+                    label: 'Average Selling Price (₹ Lakhs) - PV Sector',
+                    data: [7.8, 8.5, 9.8, 11.2],
+                    backgroundColor: '#ea580c',
+                    borderRadius: 4
+                }],
+                context: "ASP has jumped ~40% in 4 years due to the shift from Hatchbacks to SUVs."
+            },
+            margins: {
+                type: 'line',
+                labels: ['FY21', 'FY22', 'FY23', 'FY24'],
+                datasets: [
+                    { label: 'Maruti EBITDA %', data: [9.5, 6.5, 9.4, 11.8], borderColor: '#94a3b8', tension: 0.3 },
+                    { label: 'Mahindra EBITDA %', data: [13.2, 11.8, 12.5, 13.9], borderColor: '#ea580c', tension: 0.3 }
+                ],
+                context: "Margins have recovered post-Covid as commodity prices cooled and premium mix improved."
+            }
+        };
+
+        function updateFinancialChart(type) {
+            // Update Buttons
+            document.getElementById('btn-asp').className = type === 'asp' ? 
+                "px-4 py-2 text-sm font-medium rounded-md bg-orange-600 text-white shadow-sm transition" : 
+                "px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition";
+            
+            document.getElementById('btn-margins').className = type === 'margins' ? 
+                "px-4 py-2 text-sm font-medium rounded-md bg-orange-600 text-white shadow-sm transition" : 
+                "px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition";
+
+            // Update Context
+            document.getElementById('chart-context').innerText = finData[type].context;
+
+            // Render Chart
+            if(financialChart) financialChart.destroy();
+            
+            financialChart = new Chart(ctxFin, {
+                type: finData[type].type,
+                data: {
+                    labels: finData[type].labels,
+                    datasets: finData[type].datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: false, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#cbd5e1' } }
+                    }
+                }
+            });
+        }
+
+        // Init Financial Chart
+        updateFinancialChart('asp');
+
+    </script>
+</body>
+</html>

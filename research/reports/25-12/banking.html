@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Banking Sector: Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* STRICT CHART CONTAINER STYLING */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #1e3a8a; /* Blue-900 */
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .scroll-offset {
+            scroll-margin-top: 5rem;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+    <!-- Chosen Palette: "Financial Fortress"
+         Background: Slate-50 (Neutral/Paper)
+         Primary: Blue-900 (Trust/Corporate)
+         Secondary: Emerald-600 (Growth/Money)
+         Accent: Amber-500 (Warnings/Highlights)
+    -->
+
+    <!-- Application Structure Plan:
+         1. Hero Section: Executive Summary & Sector Outlook (Positive/Neutral).
+         2. Landscape & Deposit War: A combined section focusing on Structure (PSU vs Private) and the critical "Deposit War" (LDR).
+         3. The Moat Analysis: Interactive cards detailing CASA, Tech, and Branch Reach.
+         4. Financial Analyst Dashboard: Dynamic Chart allowing users to switch between NIM, GNPA, and RoA.
+         5. Drivers & Risks: Split view (Tailwinds vs Headwinds) with expandables.
+         6. Strategic Timeline: Roadmap for Short, Mid, and Long term.
+         7. Investment Matrix: Top Picks classification.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Landscape: Doughnut Chart (Market Share). Goal: Comparison.
+         2. Deposit War: Bar Chart (LDR Ratios). Goal: Highlight liquidity risk.
+         3. Financials: Grouped Bar Chart. Goal: Peer comparison on key metrics.
+         4. Outlook: Interactive Timeline. Goal: Temporal strategy.
+         5. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🏛️</span>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight text-slate-900">Bank<span class="text-blue-800">Alpha</span> India</span>
+                        <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Equity Research</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/research/" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition mr-6 flex items-center">
+                    <span class="mr-1">←</span> Research - Back
+                    </a>
+                    <button onclick="scrollToSection('landscape')" class="text-sm font-medium text-slate-500 hover:text-blue-900 transition">Market Structure</button>
+                    <button onclick="scrollToSection('deposit-war')" class="text-sm font-medium text-slate-500 hover:text-blue-900 transition">Deposit War</button>
+                    <button onclick="scrollToSection('financials')" class="text-sm font-medium text-slate-500 hover:text-blue-900 transition">Financial KPIs</button>
+                    <button onclick="scrollToSection('thesis')" class="text-sm font-medium text-slate-500 hover:text-blue-900 transition">Thesis</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-800 mb-4 ring-1 ring-inset ring-blue-700/20">Sector View: Constructive</span>
+                <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-6">Indian Banking: The Great Divergence</h1>
+                <p class="text-lg leading-8 text-slate-600 mb-8">
+                    A deep dive into the <strong>Deposit War</strong>, the resilience of <strong>PSU Banks</strong>, and the digital moats of private giants. 
+                    We analyze who wins in a "higher-for-longer" interest rate environment.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-left">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Key Theme</div>
+                        <div class="text-slate-600">Deposit mobilization is the new competitive advantage.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Asset Quality</div>
+                        <div class="text-slate-600">Best in a decade. GNPA ratios at historic lows.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition">
+                        <div class="font-bold text-slate-900 mb-1">Valuation</div>
+                        <div class="text-slate-600">PSUs offering 'Value', Private Banks offering 'GARP'.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- SECTION 1: MARKET LANDSCAPE -->
+        <section id="landscape" class="scroll-offset">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">1. Industry Structure & Share Dynamics</h2>
+                <p class="mt-4 text-slate-600 max-w-4xl">
+                    The sector is a tripartite battle between <strong>PSU Giants</strong> (Volume Leaders), <strong>Private Heavyweights</strong> (Profit Leaders), and nimble <strong>Small Finance Banks</strong>. 
+                    While PSUs have stabilized market share losses, Private banks continue to gain ground in high-yield retail lending.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-3">Market Share Breakdown</h3>
+                        <p class="text-sm text-slate-600 mb-6">
+                            Private banks have aggressively expanded their loan books (Advances), but PSUs still hold a massive fortress in Deposits, thanks to their rural trust factor.
+                        </p>
+                        
+                        <div class="flex space-x-4 mb-6">
+                            <button onclick="updateShareChart('advances')" id="btn-advances" class="px-4 py-2 text-sm font-medium rounded-md bg-blue-900 text-white shadow transition">Advances (Loans)</button>
+                            <button onclick="updateShareChart('deposits')" id="btn-deposits" class="px-4 py-2 text-sm font-medium rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Deposits</button>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-700">
+                            <li class="flex items-center"><span class="w-3 h-3 bg-blue-600 rounded-full mr-2"></span><strong>PSU Banks:</strong> Dominant in Corporate & Infra lending.</li>
+                            <li class="flex items-center"><span class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></span><strong>Private Banks:</strong> Leaders in Credit Cards & Personal Loans.</li>
+                            <li class="flex items-center"><span class="w-3 h-3 bg-amber-500 rounded-full mr-2"></span><strong>SFBs:</strong> Winning in last-mile microfinance.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE DEPOSIT WAR -->
+        <section id="deposit-war" class="scroll-offset">
+            <div class="bg-blue-50 rounded-2xl p-6 md:p-10 border border-blue-100">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4">2. The "Deposit War" & Liquidity Crunch</h2>
+                <p class="text-blue-800 max-w-4xl mb-8">
+                    The biggest headwind today is the <strong>Loan-to-Deposit Ratio (LDR)</strong>. Loan growth (~16% YoY) is outpacing Deposit growth (~12% YoY). 
+                    Banks are scrambling to raise deposits, driving up the Cost of Funds. A high LDR (>85%) indicates a bank is stretched for liquidity.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-blue-100">
+                        <h3 class="font-bold text-slate-900 mb-4 text-center">Credit-Deposit Ratio (LDR) Analysis</h3>
+                        <div class="chart-container">
+                            <canvas id="ldrChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-center text-xs text-slate-500">
+                            *HDFC Bank's ratio spiked post-merger. Optimal range is 75-85%.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100">
+                            <div class="text-2xl mb-2">🛡️</div>
+                            <h4 class="font-bold text-slate-900">CASA is King</h4>
+                            <p class="text-sm text-slate-600 mt-1">
+                                Banks with high Current Account Savings Account (CASA) ratios (like Kotak, ICICI) have a lower Cost of Funds, shielding their margins.
+                            </p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100">
+                            <div class="text-2xl mb-2">⚠️</div>
+                            <h4 class="font-bold text-slate-900">Repricing Risk</h4>
+                            <p class="text-sm text-slate-600 mt-1">
+                                As term deposits reprice at higher rates, Net Interest Margins (NIMs) will compress for banks with weak deposit franchises.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FINANCIAL DASHBOARD -->
+        <section id="financials" class="scroll-offset">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">3. Financial Health: The Analyst's Lens</h2>
+                <p class="mt-4 text-slate-600">
+                    Evaluating the "Clean-Up" of balance sheets and profitability resilience. 
+                    Use the dashboard below to compare top players across key metrics.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <!-- Dashboard Controls -->
+                <div class="flex flex-wrap gap-4 mb-8 border-b border-slate-100 pb-6">
+                    <button onclick="updateFinancialChart('nim')" id="btn-nim" class="tab-active px-4 py-2 text-sm font-medium transition hover:text-blue-800">Net Interest Margin (NIM)</button>
+                    <button onclick="updateFinancialChart('gnpa')" id="btn-gnpa" class="text-slate-500 px-4 py-2 text-sm font-medium transition hover:text-blue-800">Asset Quality (GNPA)</button>
+                    <button onclick="updateFinancialChart('roa')" id="btn-roa" class="text-slate-500 px-4 py-2 text-sm font-medium transition hover:text-blue-800">Return on Assets (RoA)</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="chart-container">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
+                        <h3 class="font-bold text-slate-900 mb-3" id="metric-title">Net Interest Margin (NIM)</h3>
+                        <p class="text-sm text-slate-600 mb-4" id="metric-desc">
+                            NIM indicates the difference between interest earned on loans vs. interest paid on deposits. Private banks generally enjoy higher NIMs due to high-yield retail loans.
+                        </p>
+                        <div class="border-t border-slate-200 pt-4">
+                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Analyst Take</div>
+                            <p class="text-sm text-blue-800 font-medium" id="metric-take">
+                                ICICI Bank leads with NIM > 4.5%. SBI has shown remarkable resilience at ~3.3% despite being a PSU.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DRIVERS & RISKS -->
+        <section id="drivers" class="scroll-offset">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tailwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                        <span class="bg-emerald-100 text-emerald-600 p-2 rounded-lg mr-3 text-lg">🚀</span> Growth Tailwinds
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Corporate Capex Cycle</h4>
+                            <p class="text-xs text-slate-600 mt-1">Private capex is picking up. Banks like SBI and Axis are best positioned for large corporate loan demand.</p>
+                        </div>
+                        <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Formalization (GST/UPI)</h4>
+                            <p class="text-xs text-slate-600 mt-1">Digital trails allow banks to lend to MSMEs with lower risk. The "Credit Gap" is shrinking.</p>
+                        </div>
+                        <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Fintech Co-Lending</h4>
+                            <p class="text-xs text-slate-600 mt-1">Partnerships with NBFCs/Fintechs are reducing sourcing costs for new customer acquisition.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Headwinds -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                        <span class="bg-red-100 text-red-600 p-2 rounded-lg mr-3 text-lg">⚠️</span> Risks & Headwinds
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-red-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Unsecured Lending Bubble</h4>
+                            <p class="text-xs text-slate-600 mt-1">RBI has increased risk weights on personal loans. Banks with high exposure (e.g., Credit Cards) face capital pressure.</p>
+                        </div>
+                        <div class="border-l-4 border-red-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Deposit Repricing Lag</h4>
+                            <p class="text-xs text-slate-600 mt-1">Old deposits maturing and renewing at higher rates will compress margins in the next 2 quarters.</p>
+                        </div>
+                        <div class="border-l-4 border-red-500 pl-4 py-1">
+                            <h4 class="font-bold text-slate-900 text-sm">Key Man Risk</h4>
+                            <p class="text-xs text-slate-600 mt-1">Leadership transitions (e.g., at Kotak, Bandhan) create short-term strategic uncertainty.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: OUTLOOK TIMELINE -->
+        <section id="outlook" class="scroll-offset">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8">Strategic Outlook</h2>
+            <div class="relative border-l-2 border-slate-200 ml-4 space-y-10">
+                <!-- Short Term -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600 border-4 border-white shadow"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Short Term (1-2 Years)</h3>
+                    <p class="text-sm text-slate-600 mt-2 max-w-2xl">
+                        <strong>Margin Compression & Volume Growth:</strong> Banks will trade margin for volume. Watch for RBI rate cuts (expected late FY25) which will result in treasury gains for PSU banks holding significant government bonds.
+                    </p>
+                </div>
+                <!-- Mid Term -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-4 border-white shadow"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Mid Term (3-5 Years)</h3>
+                    <p class="text-sm text-slate-600 mt-2 max-w-2xl">
+                        <strong>Consolidation & Privatization:</strong> Smaller Private banks/SFBs may merge. IDBI privatization could set the template for other PSUs. Focus shifts to "Operating Leverage" from digital investments.
+                    </p>
+                </div>
+                <!-- Long Term -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-4 border-white shadow"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Long Term (5+ Years)</h3>
+                    <p class="text-sm text-slate-600 mt-2 max-w-2xl">
+                        <strong>Neo-Banking & CBDC:</strong> Traditional branches may become advisory centers only. CBDC (e-Rupee) integration will fundamentally change settlement systems and CASA dynamics.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: INVESTMENT THESIS (MATRIX) -->
+        <section id="thesis" class="scroll-offset bg-slate-900 text-white rounded-2xl p-8">
+            <h2 class="text-2xl font-bold mb-6">Investment Thesis & Top Picks</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs uppercase bg-slate-800 text-slate-400">
+                        <tr>
+                            <th class="px-6 py-3">Category</th>
+                            <th class="px-6 py-3">Top Pick</th>
+                            <th class="px-6 py-3">Rationale</th>
+                            <th class="px-6 py-3">Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">Steady Compounder</td>
+                            <td class="px-6 py-4 text-emerald-400 font-bold">ICICI Bank</td>
+                            <td class="px-6 py-4">Best-in-class tech, stable management, strong CASA franchise, consistently delivering >15% RoE.</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-green-900 text-green-300 rounded text-xs">Low</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">Value Play (PSU)</td>
+                            <td class="px-6 py-4 text-blue-400 font-bold">SBI</td>
+                            <td class="px-6 py-4">Proxy for Indian economy. Asset quality cycle has turned. Trading at attractive valuations relative to book.</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-900 text-yellow-300 rounded text-xs">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-white">Turnaround / Growth</td>
+                            <td class="px-6 py-4 text-amber-400 font-bold">HDFC Bank</td>
+                            <td class="px-6 py-4">Currently in "digestive phase" post-merger. Significant re-rating potential once synergy benefits kick in.</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-900 text-yellow-300 rounded text-xs">Medium</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-50 text-slate-400 py-8 border-t border-slate-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">Comprehensive Investment Analysis of the Indian Banking Sector.</p>
+            <p class="text-xs mt-2 opacity-60">Source: RBI Financial Stability Reports, Investor Presentations, Analyst Estimates. Simulated Data for Visualization.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Navigation Logic ---
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if(element) element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- 2. Chart Configurations ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        
+        // A. Market Share Chart (Doughnut)
+        const ctxShare = document.getElementById('marketShareChart').getContext('2d');
+        let marketShareChart;
+
+        const shareData = {
+            advances: {
+                data: [55, 35, 10],
+                labels: ['PSU Banks', 'Private Banks', 'SFB/Others'],
+                colors: ['#2563eb', '#10b981', '#f59e0b'] // Blue, Green, Amber
+            },
+            deposits: {
+                data: [62, 30, 8],
+                labels: ['PSU Banks', 'Private Banks', 'SFB/Others'],
+                colors: ['#1e40af', '#34d399', '#fbbf24']
+            }
+        };
+
+        function initShareChart() {
+            marketShareChart = new Chart(ctxShare, {
+                type: 'doughnut',
+                data: {
+                    labels: shareData.advances.labels,
+                    datasets: [{
+                        data: shareData.advances.data,
+                        backgroundColor: shareData.advances.colors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        function updateShareChart(type) {
+            // Update Buttons
+            const btnAdv = document.getElementById('btn-advances');
+            const btnDep = document.getElementById('btn-deposits');
+            
+            if(type === 'advances') {
+                btnAdv.className = "px-4 py-2 text-sm font-medium rounded-md bg-blue-900 text-white shadow transition";
+                btnDep.className = "px-4 py-2 text-sm font-medium rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+            } else {
+                btnDep.className = "px-4 py-2 text-sm font-medium rounded-md bg-blue-900 text-white shadow transition";
+                btnAdv.className = "px-4 py-2 text-sm font-medium rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+            }
+
+            // Update Chart
+            marketShareChart.data.datasets[0].data = shareData[type].data;
+            marketShareChart.data.datasets[0].backgroundColor = shareData[type].colors;
+            marketShareChart.update();
+        }
+
+        // B. LDR Chart (Bar)
+        const ctxLdr = document.getElementById('ldrChart').getContext('2d');
+        new Chart(ctxLdr, {
+            type: 'bar',
+            data: {
+                labels: ['HDFC Bank', 'ICICI Bank', 'SBI', 'Axis Bank', 'Kotak'],
+                datasets: [{
+                    label: 'Loan-to-Deposit Ratio (%)',
+                    data: [110, 86, 76, 88, 84], // Simulated recent data (HDFC high due to merger)
+                    backgroundColor: (ctx) => {
+                        const val = ctx.raw;
+                        return val > 100 ? '#ef4444' : (val > 85 ? '#f59e0b' : '#10b981'); // Red if >100, Amber >85, Green otherwise
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: false, 
+                        min: 60,
+                        grid: { color: '#f1f5f9' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // C. Financial Dashboard (Grouped Bar)
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+        let financialChart;
+
+        const finData = {
+            nim: {
+                label: 'Net Interest Margin (%)',
+                data: [4.5, 3.4, 3.3, 4.0], // ICICI, HDFC, SBI, Axis
+                desc: "NIM indicates the difference between interest earned vs. paid. Private banks lead.",
+                take: "ICICI Bank leads with NIM > 4.5%. SBI has shown resilience at ~3.3%."
+            },
+            gnpa: {
+                label: 'Gross NPA (%)',
+                data: [2.3, 1.2, 2.4, 1.6], // ICICI, HDFC, SBI, Axis
+                desc: "Asset Quality has improved dramatically. Lower GNPA means fewer bad loans.",
+                take: "HDFC Bank remains the gold standard (1.2%), but SBI has cleaned up significantly (down to 2.4%)."
+            },
+            roa: {
+                label: 'Return on Assets (%)',
+                data: [2.4, 1.9, 1.0, 1.8], // ICICI, HDFC, SBI, Axis
+                desc: "RoA measures profitability relative to total assets. >1.5% is the benchmark for private banks.",
+                take: "ICICI is delivering best-in-class profitability (>2.0%)."
+            }
+        };
+
+        function initFinancialChart() {
+            financialChart = new Chart(ctxFin, {
+                type: 'bar',
+                data: {
+                    labels: ['ICICI Bank', 'HDFC Bank', 'SBI', 'Axis Bank'],
+                    datasets: [{
+                        label: 'Net Interest Margin (%)',
+                        data: finData.nim.data,
+                        backgroundColor: ['#2563eb', '#64748b', '#2563eb', '#64748b'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function updateFinancialChart(metric) {
+            // Update Tabs
+            ['nim', 'gnpa', 'roa'].forEach(m => {
+                const btn = document.getElementById('btn-' + m);
+                if(m === metric) {
+                    btn.className = "tab-active px-4 py-2 text-sm font-medium transition hover:text-blue-800";
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    btn.className = "text-slate-500 px-4 py-2 text-sm font-medium transition hover:text-blue-800";
+                }
+            });
+
+            // Update Chart
+            financialChart.data.datasets[0].label = finData[metric].label;
+            financialChart.data.datasets[0].data = finData[metric].data;
+            financialChart.update();
+
+            // Update Text Context
+            document.getElementById('metric-title').innerText = finData[metric].label;
+            document.getElementById('metric-desc').innerText = finData[metric].desc;
+            document.getElementById('metric-take').innerText = finData[metric].take;
+        }
+
+        // Initialize all
+        initShareChart();
+        initFinancialChart();
+
+    </script>
+</body>
+</html>

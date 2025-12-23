@@ -3,13 +3,14 @@ main:
   - title: "Quick-Start Guide"
     url: /quick-start-guide/
   - title: "Our Research"
-    url: /our-research/
+    url: /research/
   - title: "Products"
     url: /our-products/
   - title: "About"
     url: /about/
-  - title: "Growth Profile"
+  - title: "Profile"
     url: /profile/
   - title: "Sitemap"
     url: /sitemap/
-
+  - title: "Articles"
+    url: /articles/

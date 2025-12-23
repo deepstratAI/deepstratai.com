@@ -1,6 +1,6 @@
 ---
-title: "Our Research"
-permalink: /our-research/
+title: "Articles"
+permalink: /articles/
 layout: collection
 collection: posts
 entries_layout: list
