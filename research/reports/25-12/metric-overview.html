@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sector Decoder | DeepStratai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+        :root {
+            --primary: #1e3a8a; /* Deep Blue */
+            --accent: #ca8a04; /* Gold */
+            --bg-neutral: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-neutral);
+            color: #334155;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Sidebar Styling */
+        .sidebar-btn {
+            text-align: left;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-btn:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+        .sidebar-btn.active {
+            background-color: #eff6ff;
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Card Styling */
+        .kpi-card {
+            transition: transform 0.2s;
+            height: 100%; /* Ensure full height */
+        }
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        /* Trend Badges */
+        .trend-up { color: #16a34a; background: #dcfce7; } /* Green */
+        .trend-down { color: #dc2626; background: #fee2e2; } /* Red */
+        
+        /* Custom Scrollbar for sidebar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-900 rounded flex items-center justify-center text-white font-bold serif text-xl">S</div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 serif">Nemo's <span class="text-blue-900">Compass</span></h1>
+                    <p class="text-[10px] text-slate-500 font-medium tracking-wide uppercase">Investor's KPI Cheat Sheet</p>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <a href="/research/" class="text-sm font-bold text-slate-500 hover:text-blue-700 transition flex items-center bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+                <span class="mr-1">←</span> Back to Research
+            </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full">
+        
+        <!-- Sidebar (Desktop) / Horizontal Scroll (Mobile) -->
+        <aside class="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col z-0 md:h-full h-auto">
+            <div class="p-4 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Sector</span>
+            </div>
+            <nav id="sector-nav" class="flex-1 overflow-y-auto no-scrollbar md:flex-col flex flex-row p-2 gap-1 pb-20 md:pb-2">
+                <!-- Nav items injected via JS -->
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 p-4 md:p-8 relative" id="main-scroll">
+            
+            <div id="content-area" class="max-w-4xl mx-auto space-y-8 pb-12">
+                <!-- Dynamic Content Loads Here -->
+            </div>
+
+            <!-- Footer for Main Area -->
+            <div class="mt-12 text-center border-t border-slate-200 pt-8 pb-4">
+                <p class="text-xs text-slate-400">
+                    <strong>Mentor's Note:</strong> Metrics are just the starting point. Always read the Annual Report to understand the <em>quality</em> behind these numbers.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Javascript Logic -->
+    <script>
+        // --- DATA SOURCE (Consolidated from User Files & Equity Report) ---
+        const sectorData = {
+            'banking': {
+                icon: 'fa-building-columns',
+                name: 'Banking & Finance',
+                desc: 'The economy\'s engine. Banks arbitrage the cost of money. The sector is currently facing "Margin Compression" as deposit rates rise.',
+                insight: "Watch the <strong>CD Ratio (Credit-Deposit Ratio)</strong> closely in 2026. If it's too high (>80%), the bank is stretched for funds and margins will suffer.",
+                kpis: [
+                    {
+                        name: 'NIM (Net Interest Margin)',
+                        formula: '(Interest Earned - Interest Paid) / Avg Assets',
+                        why: 'The core profitability metric. Currently compressing as deposit costs rise faster than loan yields.',
+                        trend: 'Stable is Good',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'CASA Ratio',
+                        formula: '(Current + Savings A/c) / Total Deposits',
+                        why: 'Source of cheap funds. A high CASA is the best defense against rising interest rates.',
+                        trend: 'Higher is Better',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Credit Cost',
+                        formula: 'Provisions / Average Advances',
+                        why: 'The cost of bad loans. Low credit costs (<1%) indicate a healthy loan book quality.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    },
+                    {
+                        name: 'RoA (Return on Assets)',
+                        formula: 'Net Income / Total Assets',
+                        why: 'The ultimate efficiency metric. >1% is good for PSUs, >1.8% is the gold standard for Pvt Banks.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'it': {
+                icon: 'fa-laptop-code',
+                name: 'IT Services',
+                desc: 'Global technology partners. Shifting from "Cost Arbitrage" to "AI Transformation". Highly correlated to US/EU macroeconomics.',
+                insight: "Revenue growth is muted, so watch <strong>TCV (Total Contract Value)</strong> and the <strong>Book-to-Bill Ratio</strong> to predict the FY27 recovery.",
+                kpis: [
+                    {
+                        name: 'Revenue Growth (CC)',
+                        formula: 'Growth in Constant Currency',
+                        why: 'Eliminates currency fluctuations to show true demand. Essential for export-heavy businesses.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'TCV (Total Contract Value)',
+                        formula: 'Value of new deals signed',
+                        why: 'Forward-looking indicator. High TCV today = Revenue tomorrow.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Utilization Rate',
+                        formula: 'Billed Hours / Total Hours',
+                        why: 'Efficiency metric. High utilization protects margins when growth slows.',
+                        trend: 'Optimal (80-85%)',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Attrition (LTM)',
+                        formula: 'Last 12 Months Employee Exit %',
+                        why: 'High attrition increases costs. Stabilizing attrition is a key margin tailwind for 2026.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    }
+                ]
+            },
+            'fmcg': {
+                icon: 'fa-basket-shopping',
+                name: 'FMCG (Staples)',
+                desc: 'Defensive consumption. The sector is currently pivoting from price-led growth back to volume-led growth, driven by rural recovery.',
+                insight: "Ignore revenue growth for now; focus entirely on <strong>Volume Growth (UVG)</strong>. If volumes aren't growing, the brand is losing relevance.",
+                kpis: [
+                    {
+                        name: 'Volume Growth (UVG)',
+                        formula: 'Unit sales growth (excluding price hikes)',
+                        why: 'The truest measure of demand. Price hikes mask weakness; volume growth proves strength.',
+                        trend: 'Positive',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Gross Margin',
+                        formula: '(Revenue - COGS) / Revenue',
+                        why: 'Indicates pricing power and raw material cost management. Expanding margins allow for more ad spends.',
+                        trend: 'Expanding',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'A&P Spend %',
+                        formula: 'Advertising & Promotion / Sales',
+                        why: 'Share of Voice = Share of Market. Cutting ad spend boosts short-term profit but kills long-term brand health.',
+                        trend: 'Stable/Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Rural vs Urban Growth',
+                        formula: 'Comparative growth rates',
+                        why: 'Key 2026 theme. Rural outpacing urban is a bullish signal for mass-market FMCG.',
+                        trend: 'Rural > Urban',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'capital_goods': {
+                icon: 'fa-industry',
+                name: 'Capital Goods & Defence',
+                desc: 'The builders of India. Beneficiaries of the "Capex Supercycle" and "Indigenization". Long-cycle businesses with massive order books.',
+                insight: "Valuations are high, so execution is everything. The <strong>Order Book-to-Bill Ratio</strong> tells you how many years of revenue are already secured.",
+                kpis: [
+                    {
+                        name: 'Order Book-to-Bill',
+                        formula: 'Total Order Book / Annual Revenue',
+                        why: 'Revenue visibility. A ratio of 3x means 3 years of revenue is secured. Too high (>5x) might indicate execution issues.',
+                        trend: '2.5x - 4x is Optimal',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Order Inflow Growth',
+                        formula: 'New Orders Received (YoY)',
+                        why: 'The pipeline. Sustained inflows confirm the "Capex Supercycle" narrative.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Working Capital Days',
+                        formula: 'Receivables + Inventory - Payables (Days)',
+                        why: 'Crucial for EPC players. High working capital cycles trap cash and kill ROCE.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    },
+                    {
+                        name: 'Execution Margins',
+                        formula: 'EBITDA Margin on Executed Projects',
+                        why: 'Winning orders is easy; making money on them is hard. Watch for margin slippages due to commodity inflation.',
+                        trend: 'Stable',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'new_tech': {
+                icon: 'fa-rocket',
+                name: 'New Age Tech',
+                desc: 'Digital platforms (Food Delivery, Fintech). The narrative has shifted from "Growth at all costs" to "Sustainable Profitability".',
+                insight: "Forget P/E. Look at <strong>Contribution Margin</strong>—are they making money on every transaction before fixed costs?",
+                kpis: [
+                    {
+                        name: 'Contribution Margin',
+                        formula: '(Revenue - Variable Costs) / Revenue',
+                        why: 'Proof of unit economics. If this is positive, the business model works. If negative, they lose money on every sale.',
+                        trend: 'Positive & Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'GOV / GMV',
+                        formula: 'Gross Order Value / Merchandise Value',
+                        why: 'The total value of goods sold on the platform. Represents market share and scale.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Take Rate',
+                        formula: 'Revenue / GOV',
+                        why: 'The commission the platform earns. Rising take rates indicate pricing power/dominance.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'MTU (Monthly Transacting Users)',
+                        formula: 'Unique users transacting in a month',
+                        why: 'Measures user stickiness and adoption. Essential for platform businesses.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'auto': {
+                icon: 'fa-car-side',
+                name: 'Automobiles',
+                desc: 'Cyclical consumption. Currently witnessing a "K-Shaped" trend: Premium (SUVs) booming, Entry-level struggling.',
+                insight: "It's a volume game with high operating leverage. Watch the <strong>Product Mix (ASP)</strong>—selling fewer but expensive SUVs is more profitable than selling many cheap cars.",
+                kpis: [
+                    {
+                        name: 'Volume Growth',
+                        formula: 'Units Sold (YoY)',
+                        why: 'Primary driver. Without volume growth, high fixed costs (plants/labor) crush margins.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'ASP (Average Selling Price)',
+                        formula: 'Total Revenue / Total Volumes',
+                        why: 'Proxy for "Premiumization". Rising ASP means consumers are upgrading to higher variants.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'EBITDA Margin',
+                        formula: 'EBITDA / Revenue',
+                        why: 'Healthy margins are required to fund the expensive transition to EVs.',
+                        trend: 'Stable/Rising',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'pharma': {
+                icon: 'fa-pills',
+                name: 'Pharma',
+                desc: 'Export-oriented generics and domestic formulations. Currently facing US pricing pressure but benefiting from "China+1".',
+                insight: "Differentiate between US Generics (Price Erosion risks) and Domestic Branded (Steady compounders). Watch <strong>R&D Spend</strong>.",
+                kpis: [
+                    {
+                        name: 'US Price Erosion',
+                        formula: 'Price drop in base portfolio',
+                        why: 'Single-digit erosion is manageable. Double-digit erosion destroys profitability.',
+                        trend: 'Stable/Low',
+                        trendType: 'down'
+                    },
+                    {
+                        name: 'ANDA Approvals',
+                        formula: 'New product approvals by US FDA',
+                        why: 'The pipeline for future growth. New launches offset price erosion in old products.',
+                        trend: 'Steady Flow',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Domestic Chronic Mix',
+                        formula: '% Sales from Chronic therapies',
+                        why: 'Chronic therapies (Diabetes, Cardiac) offer sticky, recurring revenue compared to Acute (Antibiotics).',
+                        trend: 'Higher is Better',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'hospitals': {
+                icon: 'fa-user-nurse',
+                name: 'Hospitals',
+                desc: 'Structural healthcare play. Undergoing a "Capacity Supercycle". High barriers to entry and sticky demand.',
+                insight: "Hospital economics are about efficiency. <strong>ARPOB</strong> (Avg Revenue Per Bed) is the holy grail metric here.",
+                kpis: [
+                    {
+                        name: 'ARPOB',
+                        formula: 'Average Revenue Per Occupied Bed',
+                        why: 'Indicates the complexity of cases handled (case mix) and pricing power.',
+                        trend: 'Rising (> Inflation)',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Occupancy Rate',
+                        formula: 'Occupied Beds / Total Operational Beds',
+                        why: 'Optimal is 65-75%. Too low kills margins; too high indicates lost revenue opportunities.',
+                        trend: 'Stable (65-70%)',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Payor Mix',
+                        formula: 'Cash vs Insurance vs Govt Schemes',
+                        why: 'Insurance patients usually yield higher ARPOB than Govt scheme patients.',
+                        trend: 'Insurance Mix Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'ALOS (Avg Length of Stay)',
+                        formula: 'Total Patient Days / Discharges',
+                        why: 'Efficiency metric. Lower ALOS means faster patient turnover and higher efficiency.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    }
+                ]
+            },
+            'power': {
+                icon: 'fa-bolt',
+                name: 'Power & Renewables',
+                desc: 'Utility and Growth. The sector is pivoting to Green Energy (500GW target). Demand is outstripping supply.',
+                insight: "For thermal, look at <strong>PLF</strong>. For renewables, look at <strong>CUF</strong>. Both measure how hard the assets are sweating.",
+                kpis: [
+                    {
+                        name: 'PLF / CUF',
+                        formula: 'Plant Load Factor / Capacity Utilization Factor',
+                        why: 'Asset utilization. Higher PLF means higher revenue on the same fixed cost base.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Capacity Addition',
+                        formula: 'GW added per year',
+                        why: 'The primary growth driver for the next decade given the 500GW national target.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Receivable Days',
+                        formula: 'Days to collect payment from Discoms',
+                        why: 'Historically the sector\'s weakness. Keeping this low is vital for cash flow.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    }
+                ]
+            },
+            'chemicals': {
+                icon: 'fa-flask',
+                name: 'Chemicals',
+                desc: 'Cyclical material play. Currently in a "Destocking" downcycle, but structural "China+1" tailwinds remain.',
+                insight: "Chemicals are a spread business. Watch the <strong>Spread</strong> between raw material (Crude/Benzene) and finished product prices.",
+                kpis: [
+                    {
+                        name: 'Spreads / Margin',
+                        formula: 'Product Price - Raw Material Price',
+                        why: 'The primary determinant of profitability. Spreads expand/contract based on global supply.',
+                        trend: 'Expanding',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Volume Growth',
+                        formula: 'Tonnes Sold (YoY)',
+                        why: 'In a destocking cycle, volumes drop. A pickup in volume signals the cycle turn.',
+                        trend: 'Recovering',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Export Mix',
+                        formula: '% of Revenue from Exports',
+                        why: 'Proxy for "China+1" benefit. Higher export mix usually commands better valuations.',
+                        trend: 'High/Stable',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'cement': {
+                icon: 'fa-trowel-bricks',
+                name: 'Cement',
+                desc: 'Regional commodity. Proxy for infrastructure and housing. High freight costs make it a regional play.',
+                insight: "Focus on <strong>EBITDA/Ton</strong>. It levels the playing field between large and small players.",
+                kpis: [
+                    {
+                        name: 'EBITDA per Ton',
+                        formula: 'Total EBITDA / Sales Volume',
+                        why: 'The gold standard for profitability. Measures operational efficiency per unit.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Power & Fuel Cost/Ton',
+                        formula: 'Energy Cost / Sales Volume',
+                        why: 'Major cost component. Usage of Green Power/WHRS reduces this and boosts margins.',
+                        trend: 'Lower is Better',
+                        trendType: 'down'
+                    },
+                    {
+                        name: 'Capacity Utilization',
+                        formula: 'Production / Installed Capacity',
+                        why: '>85% utilization usually triggers pricing power (ability to hike prices).',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'metals': {
+                icon: 'fa-cubes-stacked',
+                name: 'Metals (Steel)',
+                desc: 'Global commodity. Prices are set globally (China factor), but costs are local. Highly cyclical.',
+                insight: "It's a debt-heavy sector. Watch <strong>Net Debt/EBITDA</strong>. In the upcycle, they must deleverage.",
+                kpis: [
+                    {
+                        name: 'EBITDA per Ton',
+                        formula: 'Operating Profit / Saleable Steel Tons',
+                        why: 'Measures margin safety. High EBITDA/ton allows survival during commodity downcycles.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Net Debt / EBITDA',
+                        formula: 'Total Debt - Cash / EBITDA',
+                        why: 'Solvency check. Metals companies go bankrupt when this ratio balloons in a downcycle.',
+                        trend: '< 3x is Safe',
+                        trendType: 'down'
+                    },
+                    {
+                        name: 'Backward Integration',
+                        formula: '% of Iron Ore/Coal captive sourced',
+                        why: 'Captive mines protect against raw material price shocks. 100% integration is ideal.',
+                        trend: 'Higher is Better',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'retail': {
+                icon: 'fa-shirt',
+                name: 'Retail (Fashion)',
+                desc: 'Organized retail. Shift from unbranded to branded. Efficiency is key.',
+                insight: "Opening new stores is easy; growing old stores is hard. <strong>SSSG (Same Store Sales Growth)</strong> is the truth-teller.",
+                kpis: [
+                    {
+                        name: 'SSSG',
+                        formula: 'Same Store Sales Growth',
+                        why: 'Measures organic demand. SSSG > Inflation means real volume growth.',
+                        trend: 'Positive',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Sales Per Sq. Ft.',
+                        formula: 'Revenue / Retail Area',
+                        why: 'Efficiency metric. Justifies the high rental costs in malls/high streets.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Inventory Turns',
+                        formula: 'COGS / Avg Inventory',
+                        why: 'Fashion is perishable. Fast fashion (like Zudio) relies on high inventory turns.',
+                        trend: 'Higher is Better',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'hotels': {
+                icon: 'fa-hotel',
+                name: 'Hotels',
+                desc: 'Cyclical hospitality. Currently in an upcycle driven by domestic tourism and weddings.',
+                insight: "Hotel rooms are perishable assets. <strong>RevPAR</strong> combines occupancy and price to show true health.",
+                kpis: [
+                    {
+                        name: 'RevPAR',
+                        formula: 'Revenue Per Available Room',
+                        why: 'The ultimate metric. Occupancy x ARR. Rising RevPAR drives non-linear profit growth.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'ARR (Avg Room Rate)',
+                        formula: 'Total Room Revenue / Rooms Sold',
+                        why: 'Pricing power. Can they hike rates without losing guests?',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Occupancy %',
+                        formula: 'Rooms Sold / Total Rooms',
+                        why: 'Base demand. >70% occupancy typically allows for aggressive pricing.',
+                        trend: 'High (>70%)',
+                        trendType: 'up'
+                    }
+                ]
+            },
+            'insurance': {
+                icon: 'fa-shield-heart',
+                name: 'Insurance',
+                desc: 'Long-term financialization play. Low penetration relative to global averages.',
+                insight: "P/E is useless here. Look at <strong>VNB Margin</strong>—the profit margin on the new policies they sell.",
+                kpis: [
+                    {
+                        name: 'APE',
+                        formula: 'Annualized Premium Equivalent',
+                        why: 'Standard measure of new business sales.',
+                        trend: 'Rising',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'VNB Margin',
+                        formula: 'Value of New Business / APE',
+                        why: 'Profitability metric. Protection products have high margins; ULIPs have low margins.',
+                        trend: 'Expanding',
+                        trendType: 'up'
+                    },
+                    {
+                        name: 'Persistency (13th/61st)',
+                        formula: '% of policies renewed',
+                        why: 'Customer stickiness. Insurance makes money on renewals, not the first year.',
+                        trend: 'Higher is Better',
+                        trendType: 'up'
+                    }
+                ]
+            }
+        };
+
+        // --- RENDER LOGIC ---
+
+        function init() {
+            const navContainer = document.getElementById('sector-nav');
+            const contentArea = document.getElementById('content-area');
+
+            // 1. Generate Navigation
+            let firstSector = null;
+            for (const [key, data] of Object.entries(sectorData)) {
+                if (!firstSector) firstSector = key;
+                
+                const btn = document.createElement('button');
+                btn.className = `sidebar-btn w-full px-4 py-3 text-sm font-medium text-slate-600 flex items-center gap-3 focus:outline-none whitespace-nowrap md:whitespace-normal`;
+                btn.id = `btn-${key}`;
+                btn.onclick = () => loadSector(key);
+                btn.innerHTML = `
+                    <i class="fa-solid ${data.icon} text-slate-400 w-5 text-center"></i>
+                    <span>${data.name}</span>
+                `;
+                navContainer.appendChild(btn);
+            }
+
+            // 2. Load First Sector
+            loadSector(firstSector);
+        }
+
+        function loadSector(key) {
+            const data = sectorData[key];
+            const contentArea = document.getElementById('content-area');
+
+            // Update Active State on Nav
+            document.querySelectorAll('.sidebar-btn').forEach(b => {
+                b.classList.remove('active', 'bg-blue-50', 'text-blue-900', 'border-blue-900');
+                b.querySelector('i').classList.remove('text-blue-900');
+                b.querySelector('i').classList.add('text-slate-400');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${key}`);
+            activeBtn.classList.add('active');
+            activeBtn.querySelector('i').classList.remove('text-slate-400');
+            activeBtn.querySelector('i').classList.add('text-blue-900');
+
+            // Generate Content HTML
+            let kpiCardsHTML = '';
+            
+            data.kpis.forEach(kpi => {
+                const trendIcon = kpi.trendType === 'up' ? '<i class="fa-solid fa-arrow-trend-up"></i>' : '<i class="fa-solid fa-arrow-trend-down"></i>';
+                const trendClass = kpi.trendType === 'up' ? 'trend-up' : 'trend-down';
+
+                kpiCardsHTML += `
+                    <div class="kpi-card bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="font-bold text-lg text-slate-800">${kpi.name}</h4>
+                            <span class="text-xs font-bold px-2 py-1 rounded-full ${trendClass} flex items-center gap-1">
+                                ${trendIcon} ${kpi.trend}
+                            </span>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">The Formula</p>
+                            <code class="text-xs bg-slate-100 px-2 py-1 rounded text-blue-900 font-mono block w-full overflow-x-auto">${kpi.formula}</code>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">Why it matters</p>
+                            <p class="text-sm text-slate-600 leading-relaxed">${kpi.why}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Populate Main Area
+            contentArea.innerHTML = `
+                <!-- Intro Header -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8 border-l-4 border-l-blue-900">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+                            <i class="fa-solid ${data.icon} text-2xl text-blue-900"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-bold text-slate-900 serif">${data.name}</h2>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-lg leading-relaxed">${data.desc}</p>
+                    
+                    <!-- Mentor Insight Box -->
+                    <div class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-100 flex gap-3">
+                        <div class="flex-shrink-0 pt-1">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-blue-900 uppercase tracking-wide block mb-1">Kartick's Insight</span>
+                            <p class="text-sm text-slate-700 italic">"${data.insight}"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI Grid -->
+                <h3 class="text-xl font-bold text-slate-800 mb-4 serif">Key Performance Indicators</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${kpiCardsHTML}
+                </div>
+            `;
+            
+            // Scroll to top on mobile
+            if(window.innerWidth < 768) {
+                document.getElementById('main-scroll').scrollTop = 0;
+            }
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
