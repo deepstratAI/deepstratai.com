@@ -1,16 +1,17 @@
 # main links
 main:
-  - title: "Quick-Start Guide"
-    url: /quick-start-guide/
-  - title: "Our Research"
-    url: /research/
-  - title: "Products"
-    url: /our-products/
+  - title: "Home"
+    url: /
   - title: "About"
     url: /about/
-  - title: "Profile"
-    url: /profile/
+  # - title: "Quick-Start Guide"
+  #   url: /quick-start-guide/
+  # - title: "Our Research"
+  #   url: /research/
+  - title: "Products"
+    url: /our-products/
+  # - title: "Profile"
+  #   url: /profile/
   - title: "Sitemap"
     url: /sitemap/
-  - title: "Articles"
-    url: /articles/
+
