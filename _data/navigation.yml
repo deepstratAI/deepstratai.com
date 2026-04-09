@@ -8,10 +8,13 @@ main:
   #   url: /quick-start-guide/
   # - title: "Our Research"
   #   url: /research/
+  - title: "Blogs and Research"
+    url: https://blog.deepstratai.com
   - title: "Products"
     url: /our-products/
   # - title: "Profile"
   #   url: /profile/
-  - title: "Sitemap"
-    url: /sitemap/
-
+  - title: "Youtube Channel"
+    url: https://www.youtube.com/@DeepStratAI
+    target: "_blank"
+ 

@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "dark", "aqua", "contrast", "air", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "default" # "default","dark", "aqua", "contrast", "air", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -123,13 +123,13 @@ analytics:
 author:
   name             : ""
   avatar           : "assets/images/Author Bio.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "...focused on building intuitive tools and providing clear education for the everyday investor... an open source initiative"
+  bio              : "...focused on building intuitive tools and providing clear education for the everyday investor... an open source initiative. Coordinates: nemo@deepstratai.com"
   location         : "India"
   email            :
   links:
-    - label: "Email"
+    - label: "Youtube"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:dwip@deepstratai.com"
+      url: "https://www.youtube.com/@DeepStratAI"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/deepstratAI"
