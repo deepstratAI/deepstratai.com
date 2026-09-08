@@ -4,17 +4,20 @@ main:
     url: /
   - title: "About"
     url: /about/
-  # - title: "Quick-Start Guide"
-  #   url: /quick-start-guide/
-  # - title: "Our Research"
-  #   url: /research/
   - title: "Blogs and Research"
     url: https://blog.deepstratai.com
   - title: "Products"
     url: /our-products/
-  # - title: "Profile"
-  #   url: /profile/
   - title: "Youtube Channel"
     url: https://www.youtube.com/@DeepStratAI
     target: "_blank"
- 
+
+products_nav:
+  - title: "Our Products"
+    children:
+      - title: "Overview"
+        url: /our-products/
+      - title: "Nemo's Tutor"
+        url: /nemos-tutor/
+      - title: "Nemo's Vector"
+        url: /nemos-vector/
