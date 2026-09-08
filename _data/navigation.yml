@@ -6,6 +6,7 @@ main:
     url: /about/
   - title: "Blogs and Research"
     url: https://blog.deepstratai.com
+    target: "_blank"
   - title: "Products"
     url: /our-products/
   - title: "Youtube Channel"

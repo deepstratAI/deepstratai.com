@@ -3,6 +3,8 @@ title: "About DeepStratAI"
 permalink: /about/
 layout: single
 author_profile: true
+sidebar:
+  nav: "products_nav"
 toc: true
 toc_sticky: true
 ---
